@@ -1121,34 +1121,27 @@ struct xmlB_PROCESSOR
 	),
 	
 	--XMLBinaryHeaders.h---------------------
-	fn read_BinaryFileHeader \
-										&bstream: \
-										&struct2fill: \
-										&signature2check: =
-	(
+	fn read_BinaryFileHeader &bstream: \
+							 &struct2fill: \
+							 &signature2check: = (
+
 		--if the signature is "CryXmlB", then we can proceed
-		if struct2fill.szSignature == signature2check then
-		(
+		if struct2fill.szSignature == signature2check then (
+
 			format "Correct signature, we continue parsing...\n\n"	
 			
 			if ::g_CryGame_dropDown_selection == "HFR" then
 			(
-				struct2fill.nXMLSize 						= readshort bstream #unsigned
-					readshort bstream
-			)
-			else
-			(
-				struct2fill.nXMLSize 						= readlong bstream #unsigned
-			)
+				struct2fill.nXMLSize = readshort bstream #unsigned
+				readshort bstream
 
-			if ::g_CryGame_dropDown_selection == "KCD" then
-			(
-				struct2fill.nXMLSize 						= readshort bstream #unsigned
-					readshort bstream
-			)
-			else
-			(
-				struct2fill.nXMLSize 						= readlong bstream #unsigned
+			) else if ::g_CryGame_dropDown_selection == "KCD" then (
+
+				struct2fill.nXMLSize = readshort bstream #unsigned
+				readshort bstream
+
+			) else (
+				struct2fill.nXMLSize = readlong bstream #unsigned
 			)
 			
 			struct2fill.nNodeTablePosition 		= readlong bstream #unsigned		
