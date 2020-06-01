@@ -475,6 +475,7 @@ struct create_bones
 	fn BONE_CONSTRUCTOR \	
 										idx: \
 										&CryBoneDescData_Comp: \
+										m_nControllerID: \
 										BoneParentID: \
 										m_numChildren: \
 										m_nOffsetParent: \
@@ -749,6 +750,7 @@ struct create_bones
 										newBone = BONE_CONSTRUCTOR \	
 																					idx:									i \
 																					CryBoneDescData_Comp: 		&CryBoneDescData_Comp \
+																					m_nControllerID: m_nControllerID \
 																					BoneParentID: 					BoneParentID \
 																					m_numChildren: m_numChildren \
 																					m_nOffsetParent: 				m_nOffsetParent \
@@ -825,6 +827,7 @@ struct create_bones
 												newBone = BONE_CONSTRUCTOR \	
 																							idx:									i \
 																							CryBoneDescData_Comp: 		&CryBoneDescData_Comp \
+																							m_nControllerID: m_nControllerID \
 																							BoneParentID: 					BoneParentID \
 																							m_numChildren: m_numChildren \
 																							m_nOffsetParent: 				m_nOffsetParent \
@@ -900,6 +903,7 @@ struct create_bones
 									newBone = BONE_CONSTRUCTOR \
 																				idx:									i \
 																				CryBoneDescData_Comp: 		&CryBoneDescData_Comp \
+																				m_nControllerID: m_nControllerID \
 																				BoneParentID: 					BoneParentID \
 																				m_numChildren: m_numChildren \
 																				m_nOffsetParent: 				m_nOffsetParent \
