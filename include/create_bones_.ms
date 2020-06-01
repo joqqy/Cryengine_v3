@@ -541,7 +541,7 @@ struct create_bones
 			-----------------------------------------Fill the runtime BONE_ENTITY-----------------------------------------------
 			inst_BONE_ENTITY = BONE_ENTITY() --create instance of BONE_ENTITY
 										
-			inst_BONE_ENTITY.BoneID 			= i
+			inst_BONE_ENTITY.BoneID 			= idx
 			inst_BONE_ENTITY.ParentID 			= BoneParentID
 			inst_BONE_ENTITY.nChildren 			= m_numChildren
 			inst_BONE_ENTITY.ControllerID 		= m_nControllerID
