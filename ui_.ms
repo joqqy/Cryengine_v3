@@ -649,6 +649,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							)
 							on btn_import pressed do --kcd
 							(
+								
 								if GetQuietMode() == false then
 								(
 									SetQuietMode true --we want prompts enabled
@@ -1535,12 +1536,14 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 												)
 												else if (getFilenameType g_cryFile) == ".cdf" then
 												(
--- 													if  NOT (Binary_XML_check g_cryFile) then --if the xml file is not Crytek Binary XML
--- 													(
--- 														format "This is not a valid CryXmlB file, aborting!\n"
--- 													)
--- 													else
--- 													(
+													/*
+													if  NOT (Binary_XML_check g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryXmlB file, aborting!\n"
+													)
+													else
+													(
+													*/
 														if chk_reset.state then
 														(
 															reset_max()
@@ -1551,7 +1554,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 														
 														cryxmlB_loader \
 																				g_MaterialRef_Bool: &g_MaterialRef_Bool
--- 													)				
+ 													--)				
 												)
 											)	
 										)
@@ -1606,14 +1609,14 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 												if (stricmp (getFilenameType g_cryFile) ".cdf" ) == 0 OR \
 													(stricmp (getFilenameType g_cryFile) ".chrparams" ) == 0 then
 												(
--- 													if  (Binary_XML_custom_check file:g_cryFile type:"CryXmlB") then --if the xml file is not Crytek Binary XML				
--- 													(
+ 													--if  (Binary_XML_custom_check file:g_cryFile type:"CryXmlB") then --if the xml file is not Crytek Binary XML				
+ 													--(
 														cryFile_CDF_loader g_cryFile:	&g_cryFile
--- 													)
--- 													else
--- 													(
--- 														format "This is not a valid CryXmlB file, aborting!\n"
--- 													)
+ 													--)
+ 													--else
+ 													--(
+ 														--format "This is not a valid CryXmlB file, aborting!\n"
+ 													--)
 												)
 												else
 												(
@@ -2011,7 +2014,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 								
 								if chk_BuildMaterial.state then
 								(
--- 									chk_Physical_Material.enabled 	= true
+ 									--chk_Physical_Material.enabled 	= true
 									grp_Options.enabled					= true
 									chk_UVW_Flip_V.enabled 			= true
 									chk_PhysMat_SSS.enabled 		= true
@@ -2117,7 +2120,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 								
 								if arg then
 								(
--- 									chk_Physical_Material.enabled 	= true
+ 									--chk_Physical_Material.enabled 	= true
 									grp_Options.enabled					= true
 									chk_UVW_Flip_V.enabled 			= true
 									chk_PhysMat_SSS.enabled 		= true
@@ -2176,6 +2179,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							)
 						)
 						
+						-- TODO why is this not loading or showing?
 						rollout rollout_Report "Report" width:290 height:150 category:9
 						(
 							checkbox 'chk_Mesh_Report' "Mesh Report" pos:[17,11] width:80 height:20 align:#left
@@ -2332,6 +2336,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							)
 						)
 
+						-- TODO why is this not loading or showing?
 						rollout rollout_animation "Animation" width:290 height:95 category:5
 						(
 							checkbox 'chk_Use_Skin_Wrap' "Use Skin_Wrap" pos:[16,17] width:255 height:21 align:#left checked:false enabled:false
@@ -2380,6 +2385,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							)
 						)
 
+						-- TODO why is this not loading or showing?
 						rollout rollout_About "About" width:290 height:50 category:10
 						(
 							label 'lbl_About' "joqqyhez@gmail.com  2016" pos:[14,13] width:263 height:19 align:#left
@@ -2507,14 +2513,14 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 						--/////////////////////////////// Instanciate the rollouts ///////////////////////////////
 						CRYOP = newRolloutFloater "CryEngine Importer v 1.0" 290 1325
 
-						addRollout 			::rollout_options 				::CRYOP  rolledUp:true
+						addRollout 			::rollout_options 			::CRYOP  rolledUp:true
 						addRollout 			::rollout_Mesh_Options 		::CRYOP  rolledUp:true						
-						addRollout 			::rollout_Report 				::CRYOP rolledUp:true
-						addRollout 			::cryImport 					::CRYOP rolledUp:false
-						addRollout 			::rollout_Tools		 			::CRYOP rolledUp:true
-						addRollout 			::rollout_animation 			::CRYOP rolledUp:true
+						addRollout 			::rollout_Report 			::CRYOP rolledUp:true
+						addRollout 			::cryImport 				::CRYOP rolledUp:false
+						addRollout 			::rollout_Tools		 		::CRYOP rolledUp:true
+						addRollout 			::rollout_animation 		::CRYOP rolledUp:true
 						-- addRollout 			::rollout_Alert 					::CRYOP rolledUp:false --set runtime instead inside CryMat_XML_.ms
-						addRollout 			::rollout_About 				::CRYOP rolledUp:true					
+						addRollout 			::rollout_About 			::CRYOP rolledUp:true					
 
 						CreateDialog 		::cryImport 	rolledUp:false width:120 height:200		
 						--//////////////////////////////////////////////////////////////////////////////////////

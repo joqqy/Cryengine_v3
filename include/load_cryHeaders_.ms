@@ -527,30 +527,26 @@ struct MTL_NAME_CHUNK_DESC_0802
 	submaterials = #()
 )
 
-fn read_MTL_NAME_CHUNK_DESC_0800 \
-														&bstream: \
-														&struct2fill: =
-(
-	struct2fill.nFlags 					= readlong bstream
-	struct2fill.nFlags2 				= readlong bstream						
+fn read_MTL_NAME_CHUNK_DESC_0800 &bstream: \
+								 &struct2fill: = (
+
+	struct2fill.nFlags = readlong bstream
+	struct2fill.nFlags2 = readlong bstream						
 						
-	struct2fill._name = ReadFixedString \
-														bstream:	&bstream \
-														fixedLen:	&struct2fill._name_count
+	struct2fill._name = ReadFixedString bstream: &bstream \
+										fixedLen: &struct2fill._name_count
 						
-	struct2fill.nPhysicalizeType 	= readlong bstream
-	struct2fill.nSubMaterials 		= readlong bstream
+	struct2fill.nPhysicalizeType = readlong bstream
+	struct2fill.nSubMaterials = readlong bstream
 						
-	for i=1 to struct2fill.nSubMatChunkId_count do
-	(
+	for i=1 to struct2fill.nSubMatChunkId_count do (
 		Append struct2fill.nSubMatChunkId (readlong bstream)
 	)
 						
-	struct2fill.nAdvancedDataChunkId 	= readlong bstream
-	struct2fill.sh_opacity 					= readfloat bstream
+	struct2fill.nAdvancedDataChunkId = readlong bstream
+	struct2fill.sh_opacity = readfloat bstream
 						
-	for i=1 to struct2fill.reserve_count do
-	(
+	for i=1 to struct2fill.reserve_count do (
 		readlong bstream
 	)			
 )
