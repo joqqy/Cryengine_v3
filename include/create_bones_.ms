@@ -476,6 +476,7 @@ struct create_bones
 										idx: \
 										&CryBoneDescData_Comp: \
 										BoneParentID: \
+										m_numChildren: \
 										m_nOffsetParent: \
 										m_arrBoneName: \
 										&existsBone:undefined =
@@ -749,6 +750,7 @@ struct create_bones
 																					idx:									i \
 																					CryBoneDescData_Comp: 		&CryBoneDescData_Comp \
 																					BoneParentID: 					BoneParentID \
+																					m_numChildren: m_numChildren \
 																					m_nOffsetParent: 				m_nOffsetParent \
 																					m_arrBoneName: 					m_arrBoneName \
 																					existsBone:							&existsBone
@@ -824,6 +826,7 @@ struct create_bones
 																							idx:									i \
 																							CryBoneDescData_Comp: 		&CryBoneDescData_Comp \
 																							BoneParentID: 					BoneParentID \
+																							m_numChildren: m_numChildren \
 																							m_nOffsetParent: 				m_nOffsetParent \
 																							m_arrBoneName: 					m_arrBoneName \
 																							existsBone:							&existsBone
@@ -898,8 +901,10 @@ struct create_bones
 																				idx:									i \
 																				CryBoneDescData_Comp: 		&CryBoneDescData_Comp \
 																				BoneParentID: 					BoneParentID \
+																				m_numChildren: m_numChildren \
 																				m_nOffsetParent: 				m_nOffsetParent \
-																				m_arrBoneName: 					m_arrBoneName			
+																				m_arrBoneName: 					m_arrBoneName \
+																				existsBone:							&existsBone		
 												
 									if m_nOffsetParent == 0 then
 									(
