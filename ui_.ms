@@ -376,7 +376,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							checkbox 'chk_Skip_LOD_Materials' "Skip $Lod Materials" pos:[13,305] width:125 height:19 enabled:true checked:false align:#left
 							checkbox 'chk_Skip_Proxy_Materials' "Skip Proxy Materials" pos:[150,305] width:252 height:19 enabled:false checked:false align:#left visible:false
 							
-							dropdownList 'ddl_CryGame' "CryEngine Game" pos:[8,340] width:265 height:40 items:#("Ryse", "Crysis(wip)", "Crysis 2(wip)", "Crysis 3(wip)", "Crysis Warhead(wip)", "Crysis Wars(wip)", "State of Decay(wip)", "HFR", "Armored Warfare") align:#left enabled:true selection:8
+							dropdownList 'ddl_CryGame' "CryEngine Game" pos:[8,340] width:265 height:40 items:#("Ryse", "Crysis(wip)", "Crysis 2(wip)", "Crysis 3(wip)", "Crysis Warhead(wip)", "Crysis Wars(wip)", "State of Decay(wip)", "HFR", "Armored Warfare", "KCD") align:#left enabled:true selection:8
 							
 							--////////////////// Include //////////////////
 							include "include\\skinwrap_.ms"
@@ -936,6 +936,213 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 										)
 									)
 									else if ddl_CryGame.selected == "HFR" then
+									(
+										if g_cryFile != undefined then
+										(
+											if doesfileexist g_cryFile then
+											(
+												--Set the gamedir to the global as well -- See function in HEADER_.ms
+												get_game_dirPath()
+												
+												if ((getFilenameType g_cryFile) == ".cgf") OR ((getFilenameType g_cryFile) == ".cgfm") then
+												(
+													if  NOT (Binary_CryTek_check File:g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryTek file, aborting!\n"
+													)
+													else
+													(
+														---------------------------- Create Instance Structs ----------------------------
+														--We start this storage here
+														local inst_Sub_Meshes 			= Sub_Meshes()
+														local inst_CDF_Attachment 		= CDF_Attachment() 	--create instance of Attachment nodes
+														local inst_CDF_Modifiers			= CDF_Modifiers() 		--create instance of Modifiers nodes
+														local inst_CDF_Model				= CDF_Model()
+														--------------------------------------------------------------------------------------	
+														
+														cryFile_loader \
+																			inst_Sub_Meshes: 			&inst_Sub_Meshes \
+																			g_cryFile:						&g_cryFile \
+																			inst_Sub_Meshes:			&inst_Sub_Meshes \
+																			inst_CDF_Model:				&inst_CDF_Model \
+																			inst_CDF_Attachment:		&inst_CDF_Attachment \
+																			inst_CDF_Modifiers:			&inst_CDF_Modifiers
+													)	
+												)
+												if ((getFilenameType g_cryFile) == ".cga") OR ((getFilenameType g_cryFile) == ".cgam") then
+												(
+													if  NOT (Binary_CryTek_check File:g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryTek file, aborting!\n"
+													)
+													else
+													(
+														---------------------------- Create Instance Structs ----------------------------
+														--We start this storage here
+														local inst_Sub_Meshes 			= Sub_Meshes()
+														local inst_CDF_Attachment 		= CDF_Attachment() 	--create instance of Attachment nodes
+														local inst_CDF_Modifiers			= CDF_Modifiers() 		--create instance of Modifiers nodes
+														local inst_CDF_Model				= CDF_Model()
+														--------------------------------------------------------------------------------------	
+														
+														cryFile_loader \
+																			inst_Sub_Meshes: 			&inst_Sub_Meshes \
+																			g_cryFile:						&g_cryFile \
+																			inst_Sub_Meshes:			&inst_Sub_Meshes \
+																			inst_CDF_Model:				&inst_CDF_Model \
+																			inst_CDF_Attachment:		&inst_CDF_Attachment \
+																			inst_CDF_Modifiers:			&inst_CDF_Modifiers
+													)	
+												)	
+												else if ((getFilenameType g_cryFile) == ".skin") OR ((getFilenameType g_cryFile) == ".skinm") then
+												(
+													if  NOT (Binary_CryTek_check File:g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryTek file, aborting!\n"
+													)
+													else
+													(
+														if chk_reset.state then
+														(
+															reset_max()
+														)
+																	
+														Reset_Arrays()								
+														Reset_BoneNodes_arrays()
+														
+														---------------------------- Create Instance Structs ----------------------------
+														--We start this storage here
+														local inst_Sub_Meshes 			= Sub_Meshes()
+														local inst_CDF_Attachment 		= CDF_Attachment() 	--create instance of Attachment nodes
+														local inst_CDF_Modifiers			= CDF_Modifiers() 		--create instance of Modifiers nodes
+														local inst_CDF_Model				= CDF_Model()
+														--------------------------------------------------------------------------------------	
+														
+														cryFile_loader \
+																			inst_Sub_Meshes: 			&inst_Sub_Meshes \
+																			g_cryFile:						&g_cryFile \
+																			inst_Sub_Meshes:			&inst_Sub_Meshes \
+																			inst_CDF_Model:				&inst_CDF_Model \
+																			inst_CDF_Attachment:		&inst_CDF_Attachment \
+																			inst_CDF_Modifiers:			&inst_CDF_Modifiers
+													)							
+												)
+												else if ((getFilenameType g_cryFile) == ".chr") OR ((getFilenameType g_cryFile) == ".chrm") then
+												(
+													if  NOT (Binary_CryTek_check File:g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryTek file, aborting!\n"
+													)
+													else
+													(
+														if chk_reset.state then
+														(
+															reset_max()
+														)
+																	
+														Reset_Arrays()								
+														Reset_BoneNodes_arrays()
+														
+														---------------------------- Create Instance Structs ----------------------------
+														--We start this storage here
+														local inst_Sub_Meshes 			= Sub_Meshes()
+														local inst_CDF_Attachment 		= CDF_Attachment() 	--create instance of Attachment nodes
+														local inst_CDF_Modifiers			= CDF_Modifiers() 		--create instance of Modifiers nodes
+														local inst_CDF_Model				= CDF_Model()
+														--------------------------------------------------------------------------------------	
+														
+														cryFile_loader \
+																			inst_Sub_Meshes: 			&inst_Sub_Meshes \
+																			g_cryFile:						&g_cryFile \
+																			inst_Sub_Meshes:			&inst_Sub_Meshes \
+																			inst_CDF_Model:				&inst_CDF_Model \
+																			inst_CDF_Attachment:		&inst_CDF_Attachment \
+																			inst_CDF_Modifiers:			&inst_CDF_Modifiers
+													)
+												)
+												else if ((getFilenameType g_cryFile) == ".skel") OR ((getFilenameType g_cryFile) == ".skelm") then
+												(
+													if  NOT (Binary_CryTek_check File:g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryTek file, aborting!\n"
+													)
+													else
+													(
+														if chk_reset.state then
+														(
+															reset_max()
+														)
+																	
+														Reset_Arrays()								
+														Reset_BoneNodes_arrays()
+														
+														---------------------------- Create Instance Structs ----------------------------
+														--We start this storage here
+														local inst_Sub_Meshes 			= Sub_Meshes()
+														local inst_CDF_Attachment 		= CDF_Attachment() 	--create instance of Attachment nodes
+														local inst_CDF_Modifiers			= CDF_Modifiers() 		--create instance of Modifiers nodes
+														local inst_CDF_Model				= CDF_Model()
+														--------------------------------------------------------------------------------------	
+														
+														cryFile_loader \
+																			inst_Sub_Meshes: 			&inst_Sub_Meshes \
+																			g_cryFile:						&g_cryFile \
+																			inst_Sub_Meshes:			&inst_Sub_Meshes \
+																			inst_CDF_Model:				&inst_CDF_Model \
+																			inst_CDF_Attachment:		&inst_CDF_Attachment \
+																			inst_CDF_Modifiers:			&inst_CDF_Modifiers
+													)
+												)
+												else if ((getFilenameType g_cryFile) == ".caf") then
+												(
+													if  NOT (Binary_CryTek_check File:g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryTek file, aborting!\n"
+													)
+													else
+													(
+														cryFile_loader \
+																			g_cryFile:	&g_cryFile \
+																			caller:		(getFilenameType g_cryFile)
+													)
+												)
+												else if ((getFilenameType g_cryFile) == ".img") then
+												(
+													if  NOT (Binary_CryTek_check File:g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryTek file, aborting!\n"
+													)
+													else
+													(
+														cryFile_loader \
+																			g_cryFile:	&g_cryFile \
+																			caller:		(getFilenameType g_cryFile)
+													)
+												)
+												else if (getFilenameType g_cryFile) == ".cdf" then
+												(
+													if  NOT (Binary_XML_check g_cryFile) then --if the xml file is not Crytek Binary XML
+													(
+														format "This is not a valid CryXmlB file, aborting!\n"
+													)
+													else
+													(
+														if chk_reset.state then
+														(
+															reset_max()
+														)
+																	
+														Reset_Arrays()								
+														Reset_BoneNodes_arrays()
+														
+														cryxmlB_loader \
+																				g_MaterialRef_Bool: &g_MaterialRef_Bool
+													)				
+												)
+											)	
+										)
+									)
+									else if ddl_CryGame.selected == "KCD" then
 									(
 										if g_cryFile != undefined then
 										(

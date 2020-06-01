@@ -189,6 +189,25 @@ struct init_Builders
 															inst_Sub_Meshes: 				&inst_Sub_Meshes
 				--/////////////////////////////////////////////////////////
 			)
+			else if game == "KCD" then
+			(
+				--//////////////////// Build the Meshes ////////////////////
+				inst_BUILDERS.BUILD_MESH_KCD \ 
+															_LOADED:							&::_LOADED \
+															_LOADEDm:							&::_LOADEDm \
+															caller:								caller \
+															nodeCaller:							nodeCaller \
+															typeCaller:							typeCaller \
+															currFileType:						currFileType \
+															Export_EFlags:					Export_EFlags \
+															info_MeshSubset:				&struct2read \
+															mtlFile:								&mtlFile \
+															g_cryFile_m:						&g_cryFile_m \
+															inst_CDF_Model:					&inst_CDF_Model \
+															inst_CDF_Attachment: 			&inst_CDF_Attachment \
+															inst_Sub_Meshes: 				&inst_Sub_Meshes
+				--/////////////////////////////////////////////////////////
+			)
 			else if game == "Armored Warfare" then
 			(
 				--//////////////////// Build the Meshes ////////////////////

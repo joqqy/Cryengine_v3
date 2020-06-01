@@ -1140,6 +1140,16 @@ struct xmlB_PROCESSOR
 			(
 				struct2fill.nXMLSize 						= readlong bstream #unsigned
 			)
+
+			if ::g_CryGame_dropDown_selection == "KCD" then
+			(
+				struct2fill.nXMLSize 						= readshort bstream #unsigned
+					readshort bstream
+			)
+			else
+			(
+				struct2fill.nXMLSize 						= readlong bstream #unsigned
+			)
 			
 			struct2fill.nNodeTablePosition 		= readlong bstream #unsigned		
 			struct2fill.nNodeCount 					= readlong bstream #unsigned		
@@ -1153,6 +1163,19 @@ struct xmlB_PROCESSOR
 			if ::g_CryGame_dropDown_selection == "HFR" then
 			(
 				-------------------- HFR --------------------
+				struct2fill.u1A 								= readbyte bstream #unsigned
+				struct2fill.u2A 								= readshort bstream #unsigned
+				struct2fill.u3A 								= readbyte bstream #unsigned
+				struct2fill.u_A_TablePosition			= readlong bstream #unsigned
+				struct2fill.u_B_TablePosition			= readlong bstream #unsigned
+				struct2fill.u_C_TablePosition			= readlong bstream #unsigned
+				struct2fill.u_D_TablePosition			= readlong bstream #unsigned
+				struct2fill.u_D_TableCount				= readlong bstream #unsigned
+			)
+
+			if ::g_CryGame_dropDown_selection == "KCD" then
+			(
+				-------------------- KCD --------------------
 				struct2fill.u1A 								= readbyte bstream #unsigned
 				struct2fill.u2A 								= readshort bstream #unsigned
 				struct2fill.u3A 								= readbyte bstream #unsigned
@@ -4539,6 +4562,7 @@ struct xmlB_PROCESSOR
 				inst_tex_tokens.ddn_tkn		= "*_ddn*"
 				inst_tex_tokens.ddna_tkn		= "*_ddna*"
 			)
+
 			(game == "HFR"):
 			(
 				inst_tex_tokens.diff_tkn 		= 	"*_dif*"
@@ -4546,6 +4570,15 @@ struct xmlB_PROCESSOR
 				inst_tex_tokens.ddn_tkn		= "*_ddn*"
 				inst_tex_tokens.ddna_tkn		= "*_ddna*"
 			)
+
+			(game == "KCD"):
+			(
+				inst_tex_tokens.diff_tkn 		= 	"*_dif*"
+				inst_tex_tokens.spec_tkn 		= 	"*_spec*"
+				inst_tex_tokens.ddn_tkn		= "*_ddn*"
+				inst_tex_tokens.ddna_tkn		= "*_ddna*"
+			)
+
 			(game == "Armored Warfare"):
 			(
 				inst_tex_tokens.diff_tkn 		= 	"*_d*"
@@ -4553,6 +4586,7 @@ struct xmlB_PROCESSOR
 				inst_tex_tokens.ddn_tkn		= "*_ddn*"
 				inst_tex_tokens.ddna_tkn		= "*_ddna*"
 			)
+			
 			default:
 			(
 				inst_tex_tokens.diff_tkn 		= 	"*_dif*"

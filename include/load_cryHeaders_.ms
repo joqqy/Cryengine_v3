@@ -1617,6 +1617,108 @@ fn read_CGF_STREAM_POSITIONS \
 			)
 		)
 	)
+	else if game == "KCD" then
+	(
+		if struct2read.nStreamType == 0x00000000 then		
+		(
+			if struct2read.nElementSize == 8 then
+			(
+				for v=1 to struct2read.nCount do
+				(								
+					local x = (	readHalfFloat bstream:&bstream	)
+					local y = (	readHalfFloat bstream:&bstream	)
+					local z = (	readHalfFloat bstream:&bstream	)
+															
+					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
+															
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[2] w --this is always 1.0 so far in my tests (but what is it for?)
+				)
+			)
+			else if struct2read.nElementSize == 12 then
+			(
+				for v=1 to struct2read.nCount do
+				(					
+					local x = (readfloat bstream)
+					local y = (readfloat bstream)
+					local z = (readfloat bstream)
+					
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
+				)
+			)
+			else if struct2read.nElementSize == 16 then --HFR test
+			(
+				for v=1 to struct2read.nCount do
+				(
+					local x = (readfloat bstream)
+					local y = (readfloat bstream)
+													readlong bstream
+					local z = (readfloat bstream)					
+					
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
+				)
+			)
+		)
+		else 	if struct2read.nStreamType == 0x0000000F then --This is streamtype CGF_STREAM_P3S_C4B_T2S
+		(
+			if struct2read.nElementSize == 8 then
+			(
+				for v=1 to struct2read.nCount do
+				(								
+					local x = (	readHalfFloat bstream:&bstream	)
+					local y = (	readHalfFloat bstream:&bstream	)
+					local z = (	readHalfFloat bstream:&bstream	)
+															
+					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
+															
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[2] w --this is always 1.0 so far in my tests (but what is it for?)
+				)
+			)
+			else if struct2read.nElementSize == 12 then
+			(
+				for v=1 to struct2read.nCount do
+				(
+					local x = (readfloat bstream)
+					local y = (readfloat bstream)
+					local z = (readfloat bstream)					
+					
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
+				)
+			)
+			else if struct2read.nElementSize == 16 then --HFR test
+			(
+				for v=1 to struct2read.nCount do
+				(		
+					--Verts
+					local x = (	readHalfFloat bstream:&bstream	) --pos
+					local y = (	readHalfFloat bstream:&bstream	) --pos
+					local z = (	readHalfFloat bstream:&bstream	) --pos
+					local id = readshort bstream
+				
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS_HFR[1] [x, y, z] --Custom StreamType for HFR
+
+					--TexCoords
+					local bgra = #()
+					for i=1 to 4 do
+					(
+						Append bgra (readbyte bstream)
+					)
+					
+					--UV
+					local point_3 = point3				
+					local u = (	readHalfFloat bstream:&bstream	) --bgra
+					local v = (	readHalfFloat bstream:&bstream	) --bgra
+					local w = 0					
+					
+					--UVW fix , we have to mirror the UVs vertically	
+					local point_3 		= [u, (-v+1), w]
+
+					Append StreamStruct2fill.CGF_STREAM_TEXCOORDS point_3
+				)
+			)
+		)
+	)
 	else if game == "Armored Warfare" then
 	(
 		if struct2read.nStreamType == 0x00000000 then
@@ -1676,6 +1778,23 @@ fn read_CGF_STREAM_NORMALS \
 		)
 	)
 	else if game == "HFR" then
+	(
+		if struct2read.nStreamType == 0x00000001 then
+		(
+			if struct2read.nElementSize == 12 then
+			(
+				for v=1 to struct2read.nCount do
+				(								
+					local x = (readfloat bstream)
+					local y = (readfloat bstream)
+					local z = (readfloat bstream)
+					
+					Append StreamStruct2fill.CGF_STREAM_NORMALS [x, y, z]			
+				)
+			)
+		)
+	)
+	else if game == "KCD" then
 	(
 		if struct2read.nStreamType == 0x00000001 then
 		(
@@ -1772,6 +1891,32 @@ fn read_CGF_STREAM_TEXCOORDS \
 		)
 	)
 	else if game == "HFR" then
+	(
+		if struct2read.nStreamType == 0x00000002 then
+		(
+			for v=1 to struct2read.nCount do
+			(		
+				local point_3 = point3
+				
+				local u = (readfloat bstream)
+				local v = (readfloat bstream)
+				local w = 0
+				
+				--UVW fix --for Ryse, we have to mirror the UVs vertically	
+				if ::g_UVW_Flip_V OR (stricmp ::g_CryGame_dropDown_selection "Ryse") == 0 then
+				(
+					point_3 		= [u, (-v+1), w]
+				)
+				else
+				(
+					point_3 		= [u, v, w]
+				)
+
+				Append StreamStruct2fill.CGF_STREAM_TEXCOORDS point_3		
+			)
+		)
+	)
+	else if game == "KCD" then
 	(
 		if struct2read.nStreamType == 0x00000002 then
 		(
@@ -1961,6 +2106,45 @@ fn read_CGF_STREAM_INDICES \
 			)
 		)
 	)
+	else if game == "KCD" then
+	(
+		if struct2read.nStreamType == 0x00000005 then
+		(		
+			if ::rollout_Report.chk_Mesh_Report.state then
+			(
+				format "######### ftell bstream: %\n" (ftell bstream)
+				format "#####################################\n"
+				format "struct2read.nCount: %\n" struct2read.nCount
+				format "#####################################\n"
+			)
+			
+			local idx_offset = 1		
+			if struct2read.nElementSize == 2 then --This is the size of each element to read
+			(
+				for v=1 to struct2read.nCount/3 do --this is the number of elements to read (3 for each face)
+				(
+					--Remember max index is 1-based (NOT zero based !) thus we need to add +1 to each index
+					local a 		= (readshort bstream #unsigned)+idx_offset
+					local b 		= (readshort bstream #unsigned)+idx_offset
+					local c 		= (readshort bstream #unsigned)+idx_offset	
+					
+					Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
+				)
+			)
+			else if struct2read.nElementSize == 4 then
+			(
+				for v=1 to struct2read.nCount/3 do --this is the number of elements to read (3 for each face)
+				(
+					--Remember max index is 1-based (NOT zero based !) thus we need to add +1 to each index
+					local a 		= (readfloat bstream #unsigned)+idx_offset
+					local b 		= (readfloat bstream #unsigned)+idx_offset
+					local c 		= (readfloat bstream #unsigned)+idx_offset	
+					
+					Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
+				)
+			)
+		)
+	)
 	else if game == "Armored Warfare" then
 	(
 		if struct2read.nStreamType == 0x00000005 then
@@ -2070,6 +2254,37 @@ fn read_CGF_STREAM_TANGENTS \
 		)
 	)
 	else if game == "HFR" then
+	(
+		if struct2read.nStreamType == 0x00000006 then
+		(
+			if struct2read.nElementSize == 0x00000010 then
+			(
+				for v=1 to struct2read.nCount do
+				(	
+					--Tangent and Bitangent for every vertex
+					
+					local T = point3
+					local B = point3
+					
+					local t1 = readshort bstream
+					local t2 = readshort bstream
+					local t3 = readshort bstream
+						local u4 = readshort bstream #unsigned --Area ?
+					
+					local b1 = readshort bstream
+					local b2 = readshort bstream
+					local b3 = readshort bstream
+						local v4 = readshort bstream #unsigned --Area ?
+					
+					T = [(t1/0xFFFF as float), (t2/0xFFFF as float),(t3/0xFFFF as float)]
+					B = [(b1/0xFFFF as float), (b2/0xFFFF as float),(b3/0xFFFF as float)]
+					
+					Append StreamStruct2fill.CGF_STREAM_TANGENTS #(T , B)		
+				)
+			)
+		)
+	)
+	else if game == "KCD" then
 	(
 		if struct2read.nStreamType == 0x00000006 then
 		(
@@ -2225,6 +2440,44 @@ fn read_CGF_STREAM_BONEMAPPING \
 		)
 	)
 	else 	if game == "HFR" then
+	(
+		if struct2read.nStreamType == 0x00000009 then
+		(
+			--We will divide the weights below by this constant, to get a float
+			local weight = 255.0
+			
+			for v=1 to struct2read.nCount do
+			(
+				--create struct instance
+				inst_CrySkinVtx = CrySkinVtx()
+				
+				--We read the bone ids		
+				local br 		= (readbyte bstream #unsigned)
+				local bg 	= (readbyte bstream #unsigned)
+				local bb 	= (readbyte bstream #unsigned)
+				local ba 	= (readbyte bstream #unsigned)
+				
+				--We read the weights (and later divide them by 255.0 to get the real float weights)
+				local wr 	= (readbyte bstream #unsigned)
+				local wg 	= (readbyte bstream #unsigned)
+				local wb 	= (readbyte bstream #unsigned)
+				local wa 	= (readbyte bstream #unsigned)
+				
+				--We fill the struct point4 for ids, and point4 for weights
+				inst_CrySkinVtx.idx 	= [br, bg, bb, ba]
+				inst_CrySkinVtx.w	= [ \
+													(wr/weight as float), \
+													(wg/weight as float), \
+													(wb/weight as float), \
+													(wa/weight as float) \
+												]
+				
+				--Append the final struct to ECgfStreamType
+				Append 		StreamStruct2fill.CGF_STREAM_BONEMAPPING 		inst_CrySkinVtx
+			)
+		)
+	)
+	else 	if game == "KCD" then
 	(
 		if struct2read.nStreamType == 0x00000009 then
 		(
@@ -3124,7 +3377,7 @@ fn read_MESH_SUBSETS_CHUNK_DESC_0800_v2 \
 		local boneFlag 		= 0x00000006
 		local boneFlag2 		= 0x00000016
 		local boneFlag3		= 0x0000001E
--- 		local boneFlag4		= 0x00000014	--cga
+ 		--local boneFlag4		= 0x00000014	--cga
 		local boneFlag5		= 0x00000002 --Cabal2	
 		-----------------------------------------------
 		local staticFlag4		= 0x00000014	--cga
@@ -3133,7 +3386,62 @@ fn read_MESH_SUBSETS_CHUNK_DESC_0800_v2 \
 		if 	struct2fill.nFlags == boneFlag 	OR \
 			struct2fill.nFlags == boneFlag2 	OR \
 			struct2fill.nFlags == boneFlag3 	OR \
--- 			struct2fill.nFlags == boneFlag4	OR
+ 			--struct2fill.nFlags == boneFlag4	OR
+			struct2fill.nFlags == boneFlag5	then
+		(
+			for n=1 to struct2fill.nCount do --we loop n number of times (that is the number of subsets as given by nCount - a boneset for each submesh)
+			(
+				--Create struct
+				local inst_MeshBoneIDs = MeshBoneIDs()
+
+				inst_MeshBoneIDs.numBoneIDs = readlong bstream #unsigned
+				--Each subset bone description chunk is 260 bytes long (4 + 256) former is uint32 numBonesIds, and the rest is uint16 bone IDs
+				for b=1 to inst_MeshBoneIDs.arrBoneIDs_length do
+				(
+					id = readshort bstream #unsigned
+					Append inst_MeshBoneIDs.arrBoneIDs id
+				)
+				
+				Append 	struct2fill.MeshBoneSubsetsArr inst_MeshBoneIDs
+			)			
+
+			matrix = matrix3 1
+				
+			read_Matrix \
+							bstream: 		&bstream \
+							matrix: 			&matrix \
+							struct2Fill: 		&struct2fill
+			
+			
+		)-- End of reading bones ids
+		else if 	struct2fill.nFlags == staticFlag  OR \
+					struct2fill.nFlags == staticFlag4 then -- If has MeshSubsetTexelDensity
+		(
+			local point3_HFR 		= point3 0 0 0
+			point3_HFR[1] 			= readfloat bstream
+			point3_HFR[2] 			= readfloat bstream
+			point3_HFR[3] 			= readfloat bstream
+			struct2fill.point3_HFR 	= point3_HFR
+		)
+		else if struct2fill.nFlags == 0x00000002 then
+		(
+		)
+	)
+	if ::cryImport.ddl_CryGame.selected == "KCD" then
+	(
+		local boneFlag 		= 0x00000006
+		local boneFlag2 		= 0x00000016
+		local boneFlag3		= 0x0000001E
+ 		--local boneFlag4		= 0x00000014	--cga
+		local boneFlag5		= 0x00000002 --Cabal2	
+		-----------------------------------------------
+		local staticFlag4		= 0x00000014	--cga
+		local staticFlag 		= 0x00000004
+		
+		if 	struct2fill.nFlags == boneFlag 	OR \
+			struct2fill.nFlags == boneFlag2 	OR \
+			struct2fill.nFlags == boneFlag3 	OR \
+ 			--struct2fill.nFlags == boneFlag4	OR
 			struct2fill.nFlags == boneFlag5	then
 		(
 			for n=1 to struct2fill.nCount do --we loop n number of times (that is the number of subsets as given by nCount - a boneset for each submesh)
