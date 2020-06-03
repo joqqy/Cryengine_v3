@@ -2411,7 +2411,8 @@ fn read_CGF_STREAM_BONEMAPPING \
 
 				-- TODO urgent, urgent, urgent have we forgotten to read bVolumetric?
 				-- test it
-			    local bVolumetric = (readlong bstream) -- this is a test, because we noticed it was missing (we tested it in cryengine_v3 too and so far it seems to work)
+				-- this is a test, and it did not work for Ryse, we tested the elephant, and we lost all the meshes, but not sure it is because of this but in any case we turn it off again
+			    --local bVolumetric = (readlong bstream) 
 				
 				--We read the bone ids		
 				local br 	= (readbyte bstream #unsigned)
@@ -2426,7 +2427,7 @@ fn read_CGF_STREAM_BONEMAPPING \
 				local wa 	= (readbyte bstream #unsigned)
 				
 				--We fill the struct point4 for ids, and point4 for weights
-				inst_CrySkinVtx.bVolumetric = bVolumetric -- test (was missing)
+				--inst_CrySkinVtx.bVolumetric = bVolumetric -- test (was missing) did not work, so we turn it off again
 				inst_CrySkinVtx.idx 	= [br, bg, bb, ba]
 				inst_CrySkinVtx.w	= [ \
 													(wr/weight as float), \
