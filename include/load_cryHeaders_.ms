@@ -2408,6 +2408,10 @@ fn read_CGF_STREAM_BONEMAPPING \
 			(
 				--create struct instance
 				inst_CrySkinVtx = CrySkinVtx()
+
+				-- TODO urgent, urgent, urgent have we forgotten to read bVolumetric?
+				-- test it
+			    local bVolumetric = (readlong bstream) -- this is a test, because we noticed it was missing (we tested it in cryengine_v3 too and so far it seems to work)
 				
 				--We read the bone ids		
 				local br 	= (readbyte bstream #unsigned)
@@ -2422,6 +2426,7 @@ fn read_CGF_STREAM_BONEMAPPING \
 				local wa 	= (readbyte bstream #unsigned)
 				
 				--We fill the struct point4 for ids, and point4 for weights
+				inst_CrySkinVtx.bVolumetric = bVolumetric -- test (was missing)
 				inst_CrySkinVtx.idx 	= [br, bg, bb, ba]
 				inst_CrySkinVtx.w	= [ \
 													(wr/weight as float), \
