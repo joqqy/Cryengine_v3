@@ -73,6 +73,26 @@ struct ChunkTypes
 	ChunkType_BspTreeData 					= 0xAAFC0009
 )
 
+struct enum_ECgfStreamType
+(
+	CGF_STREAM_POSITIONS = 0x0000,
+	CGF_STREAM_NORMALS = 0x0001,
+	CGF_STREAM_TEXCOORDS = 0x0002,
+	CGF_STREAM_COLORS = 0x0003,
+	CGF_STREAM_COLORS2 = 0x0004,
+	CGF_STREAM_INDICES = 0x0005,
+	CGF_STREAM_TANGENTS = 0x0006,
+	CGF_STREAM_DUMMY0_ = 0x0007,  --//!< Used to be CGF_STREAM_SHCOEFFS, dummy is needed to keep existing assets loadable.
+	CGF_STREAM_DUMMY1_ = 0x0008,  --//!< Used to be CGF_STREAM_SHAPEDEFORMATION, dummy is needed to keep existing assets loadable.
+	CGF_STREAM_BONEMAPPING = 0x0009,
+	CGF_STREAM_FACEMAP = 0x000A,
+	CGF_STREAM_VERT_MATS = 0x000B,
+	CGF_STREAM_QTANGENTS = 0x000C,
+	CGF_STREAM_SKINDATA = 0x000D,
+	CGF_STREAM_DUMMY2_ = 0x000E,  --//!< Used to be CGF_STREAM_PS3EDGEDATA, dummy is needed to keep existing assets loadable.
+	CGF_STREAM_P3S_C4B_T2S = 0x000F
+)
+
 
 --it's always good to read the actual code in IStreamEngine.h file for any missing information.
 /*
@@ -2389,172 +2409,95 @@ fn read_CGF_STREAM_COLORS2 \
 	)
 )
 
-fn read_CGF_STREAM_BONEMAPPING \
-													&bstream: \
-													&struct2read: \
-													&info_MeshSubset: \
-													&StreamStruct2fill: =
-(
+fn read_CGF_STREAM_BONEMAPPING &bstream: \
+							   &struct2read: \
+							   &info_MeshSubset: \
+							   &StreamStruct2fill: = (
+
+	ienum_ECgfStreamType = enum_ECgfStreamType()						   	
+
 	local game = ::cryImport.ddl_CryGame.selected
-	
-	if game == "Ryse" then
-	(
-		if struct2read.nStreamType == 0x00000009 then
-		(
-			--We will divide the weights below by this constant, to get a float
-			local weight = 255.0
-			
-			for v=1 to struct2read.nCount do
-			(
-				--create struct instance
-				inst_CrySkinVtx = CrySkinVtx()
+
+
+	if struct2read.nStreamType == ienum_ECgfStreamType.CGF_STREAM_BONEMAPPING then (
+
+		--// We will divide the weights below by this constant, to get a float
+		local weight = 255.0			
+		
+		for v=1 to struct2read.nCount do (
+
+			--// create struct instance
+			inst_CrySkinVtx = CrySkinVtx()
+
+			-- for case == 12, see ref:
+			-- I:\new_mod_tools\Cryengine\Cryengine-Converter\CgfConverter\CryEngine_Core\Chunks\
+
+			if struct2read.nElementSize == 8 then (
 
 				-- TODO urgent, urgent, urgent have we forgotten to read bVolumetric?
 				-- test it
 				-- this is a test, and it did not work for Ryse, we tested the elephant, and we lost all the meshes, but not sure it is because of this but in any case we turn it off again
-			    --local bVolumetric = (readlong bstream) 
+				--local bVolumetric = (readlong bstream) -- this is a test, because we noticed it was missing (we tested it in cryengine_v3 too and so far it seems to work)
 				
-				--We read the bone ids		
-				local br 	= (readbyte bstream #unsigned)
-				local bg 	= (readbyte bstream #unsigned)
-				local bb 	= (readbyte bstream #unsigned)
-				local ba 	= (readbyte bstream #unsigned)
+				--// We read the bone ids		
+				local br = (readbyte bstream #unsigned)
+				local bg = (readbyte bstream #unsigned)
+				local bb = (readbyte bstream #unsigned)
+				local ba = (readbyte bstream #unsigned)
 				
-				--We read the weights (and later divide them by 255.0 to get the real float weights)
-				local wr 	= (readbyte bstream #unsigned)
-				local wg 	= (readbyte bstream #unsigned)
-				local wb 	= (readbyte bstream #unsigned)
-				local wa 	= (readbyte bstream #unsigned)
+				--// We read the weights (and later divide them by 255.0 to get the real float weights)
+				local wr = (readbyte bstream #unsigned)
+				local wg = (readbyte bstream #unsigned)
+				local wb = (readbyte bstream #unsigned)
+				local wa = (readbyte bstream #unsigned)
 				
-				--We fill the struct point4 for ids, and point4 for weights
-				--inst_CrySkinVtx.bVolumetric = bVolumetric -- test (was missing) did not work, so we turn it off again
-				inst_CrySkinVtx.idx 	= [br, bg, bb, ba]
-				inst_CrySkinVtx.w	= [ \
-													(wr/weight as float), \
-													(wg/weight as float), \
-													(wb/weight as float), \
-													(wa/weight as float) \
-												]
+				--// We fill the struct point4 for ids, and point4 for weights
+				--inst_CrySkinVtx.bVolumetric = bVolumetric -- test (was missing)
+				inst_CrySkinVtx.idx = [br, bg, bb, ba]
+				inst_CrySkinVtx.w = [(wr/weight as float), \
+									(wg/weight as float), \
+									(wb/weight as float), \
+									(wa/weight as float) ]
+
+			) else if struct2read.nElementSize == 12 then (
+
+				-- TODO urgent, urgent, urgent have we forgotten to read bVolumetric?
+				-- test it
+				-- this is a test, and it did not work for Ryse, we tested the elephant, and we lost all the meshes, but not sure it is because of this but in any case we turn it off again
+				--local bVolumetric = (readlong bstream) -- this is a test, because we noticed it was missing (we tested it in cryengine_v3 too and so far it seems to work)
 				
-				--Append the final struct to ECgfStreamType
-				Append 		StreamStruct2fill.CGF_STREAM_BONEMAPPING 		inst_CrySkinVtx
+				--// We read the bone ids		
+				local br = (readshort bstream #unsigned) -- short here
+				local bg = (readshort bstream #unsigned) -- short here
+				local bb = (readshort bstream #unsigned) -- short here
+				local ba = (readshort bstream #unsigned) -- short here
+				
+				--// We read the weights (and later divide them by 255.0 to get the real float weights)
+				local wr = (readbyte bstream #unsigned)
+				local wg = (readbyte bstream #unsigned)
+				local wb = (readbyte bstream #unsigned)
+				local wa = (readbyte bstream #unsigned)
+				
+				--// We fill the struct point4 for ids, and point4 for weights
+				--inst_CrySkinVtx.bVolumetric = bVolumetric -- test (was missing)
+				inst_CrySkinVtx.idx = [br, bg, bb, ba]
+				inst_CrySkinVtx.w = [(wr/weight as float), \
+									(wg/weight as float), \
+									(wb/weight as float), \
+									(wa/weight as float) ]
+
+			) else (
+				-- unknown bone structure
 			)
-		)
-	)
-	else 	if game == "HFR" then
-	(
-		if struct2read.nStreamType == 0x00000009 then
-		(
-			--We will divide the weights below by this constant, to get a float
-			local weight = 255.0
 			
-			for v=1 to struct2read.nCount do
-			(
-				--create struct instance
-				inst_CrySkinVtx = CrySkinVtx()
-				
-				--We read the bone ids		
-				local br 		= (readbyte bstream #unsigned)
-				local bg 	= (readbyte bstream #unsigned)
-				local bb 	= (readbyte bstream #unsigned)
-				local ba 	= (readbyte bstream #unsigned)
-				
-				--We read the weights (and later divide them by 255.0 to get the real float weights)
-				local wr 	= (readbyte bstream #unsigned)
-				local wg 	= (readbyte bstream #unsigned)
-				local wb 	= (readbyte bstream #unsigned)
-				local wa 	= (readbyte bstream #unsigned)
-				
-				--We fill the struct point4 for ids, and point4 for weights
-				inst_CrySkinVtx.idx 	= [br, bg, bb, ba]
-				inst_CrySkinVtx.w	= [ \
-													(wr/weight as float), \
-													(wg/weight as float), \
-													(wb/weight as float), \
-													(wa/weight as float) \
-												]
-				
-				--Append the final struct to ECgfStreamType
-				Append 		StreamStruct2fill.CGF_STREAM_BONEMAPPING 		inst_CrySkinVtx
-			)
+			--// Append the final struct to ECgfStreamType
+			Append 	StreamStruct2fill.CGF_STREAM_BONEMAPPING inst_CrySkinVtx
 		)
 	)
-	else 	if game == "KCD" then
-	(
-		if struct2read.nStreamType == 0x00000009 then
-		(
-			--We will divide the weights below by this constant, to get a float
-			local weight = 255.0
-			
-			for v=1 to struct2read.nCount do
-			(
-				--create struct instance
-				inst_CrySkinVtx = CrySkinVtx()
-				
-				--We read the bone ids		
-				local br 		= (readbyte bstream #unsigned)
-				local bg 	= (readbyte bstream #unsigned)
-				local bb 	= (readbyte bstream #unsigned)
-				local ba 	= (readbyte bstream #unsigned)
-				
-				--We read the weights (and later divide them by 255.0 to get the real float weights)
-				local wr 	= (readbyte bstream #unsigned)
-				local wg 	= (readbyte bstream #unsigned)
-				local wb 	= (readbyte bstream #unsigned)
-				local wa 	= (readbyte bstream #unsigned)
-				
-				--We fill the struct point4 for ids, and point4 for weights
-				inst_CrySkinVtx.idx 	= [br, bg, bb, ba]
-				inst_CrySkinVtx.w	= [ \
-													(wr/weight as float), \
-													(wg/weight as float), \
-													(wb/weight as float), \
-													(wa/weight as float) \
-												]
-				
-				--Append the final struct to ECgfStreamType
-				Append 		StreamStruct2fill.CGF_STREAM_BONEMAPPING 		inst_CrySkinVtx
-			)
-		)
-	)
-	else	if game == "Armored Warfare" then
-	(
-		if struct2read.nStreamType == 0x00000009 then
-		(
-			--We will divide the weights below by this constant, to get a float
-			local weight = 255.0
-			
-			for v=1 to struct2read.nCount do
-			(
-				--create struct instance
-				inst_CrySkinVtx = CrySkinVtx()
-				
-				--We read the bone ids		
-				local br 		= (readbyte bstream #unsigned)
-				local bg 	= (readbyte bstream #unsigned)
-				local bb 	= (readbyte bstream #unsigned)
-				local ba 	= (readbyte bstream #unsigned)
-				
-				--We read the weights (and later divide them by 255.0 to get the real float weights)
-				local wr 	= (readbyte bstream #unsigned)
-				local wg 	= (readbyte bstream #unsigned)
-				local wb 	= (readbyte bstream #unsigned)
-				local wa 	= (readbyte bstream #unsigned)
-				
-				--We fill the struct point4 for ids, and point4 for weights
-				inst_CrySkinVtx.idx 	= [br, bg, bb, ba]
-				inst_CrySkinVtx.w	= [ \
-													(wr/weight as float), \
-													(wg/weight as float), \
-													(wb/weight as float), \
-													(wa/weight as float) \
-												]
-				
-				--Append the final struct to ECgfStreamType
-				Append 		StreamStruct2fill.CGF_STREAM_BONEMAPPING 		inst_CrySkinVtx
-			)
-		)
-	)
+
+	--// kcd debug
+	--format "CGF_STREAM_BONEMAPPING: %\n" StreamStruct2fill.CGF_STREAM_BONEMAPPING
+	print StreamStruct2fill.CGF_STREAM_BONEMAPPING
 )
 
 fn read_CGF_STREAM_FACEMAP =
