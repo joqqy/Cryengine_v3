@@ -808,6 +808,7 @@ fn ISOLATED_CDF_NODE_LOADER \
 						_Type_											= attribVal						
 						inst_CDF_Attachment.n_Type 		= _Type_
 						
+						-- TODO, urgent warning, I could turn off these counter without any errors. They seem to do nothing!
 						if (stricmp _Type_ "CA_SKIN") == 0 then
 						(
 							-------------------------------------------------------------------------------------------

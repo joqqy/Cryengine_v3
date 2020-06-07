@@ -55,6 +55,7 @@ struct init_Builders
 								fileType1:		fileType1 \
 								fileType2:		fileType2		
 		
+		-- TODO urgent, warning, these seems to do nothing. I could turn these off without any errors in loading						
 		if 	(stricmp currFileType ".skin") == 0 OR \
 			(stricmp currFileType ".cgf") == 0 OR \
 			(stricmp currFileType ".chr") == 0 OR \
