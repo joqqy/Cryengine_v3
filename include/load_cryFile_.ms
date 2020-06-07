@@ -114,12 +114,10 @@ fn load_cryFile \
 																										bstream:			&bstream \
 																										fileHeader:			&inst_FILE_HEADER \
 																										struct2read:		&inst_CHUNKTABLE_0744_0745 \
-																										global_Append:	::g_MESH_PHYSICS_DATA_CHUNK_DESC_0800
+																										global_Append:	::g_MESH_PHYSICS_DATA_CHUNK_DESC_0800									
 									
-									--/*
 									----------------------------------------------------------- Read Streams and Build Meshes ----------------------------------------------------------------
 									--We read all the DataStreams (including Array of mesh subsets) in here, structs are created runtime
-									inst_MESH_SUBSETS_CHUNK_DESC_0800 = MESH_SUBSETS_CHUNK_DESC_0800()
 									read_CHUNK_0017 \
 																M_FILE_EXISTS_BOOL:		&M_FILE_EXISTS_BOOL \
 																M_TEST_BOOL:				&M_TEST_BOOL \
@@ -136,8 +134,6 @@ fn load_cryFile \
 																inst_CDF_Model:				&inst_CDF_Model \
 																inst_CDF_Attachment:		&inst_CDF_Attachment \
 																inst_CDF_Modifiers:			&inst_CDF_Modifiers
-									----------------------------------------------------------------------------------------------------------------------------------------------------------------
-									--*/
 								)
 							)	
 						)

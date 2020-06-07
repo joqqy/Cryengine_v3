@@ -1268,8 +1268,6 @@ struct MeshSubsetTexelDensity
 
 struct EFlags_MESH_SUBSETS_CHUNK_DESC_0800
 (
-	PI_KCD_HACK_FLAG_SKIN_BONE = 0x0000, -- TODO this is a hack we added
-
 	SH_HAS_DECOMPR_MAT = 0x0001, --//!< Obsolete.
 	BONEINDICES = 0x0002,
 	HAS_SUBSET_TEXEL_DENSITY = 0x0004
@@ -3332,6 +3330,9 @@ fn read_MESH_SUBSETS_CHUNK_DESC_0800_v2 &bstream: \
 	--HFR check
 	if ::cryImport.ddl_CryGame.selected == "HFR" then (
 
+		-- the EFlags are extended for HFR and it sees that in the end, HFR reads a matrix(?)
+		-- So this is a mess right now. Not sure we even care since we do not care for HFR
+
 		local boneFlag = 0x00000006 -- 0x0002 + 0x0004
 		local boneFlag2 = 0x00000016
 		local boneFlag3	= 0x0000001E
@@ -3363,8 +3364,7 @@ fn read_MESH_SUBSETS_CHUNK_DESC_0800_v2 &bstream: \
 				Append 	struct2fill.MeshBoneSubsetsArr inst_MeshBoneIDs
 			)			
 
-			matrix = matrix3 1
-				
+			matrix = matrix3 1				
 			read_Matrix bstream: &bstream \
 						matrix: &matrix \
 						struct2Fill: &struct2fill			
@@ -3381,22 +3381,16 @@ fn read_MESH_SUBSETS_CHUNK_DESC_0800_v2 &bstream: \
 		) else if struct2fill.nFlags == 0x00000002 then (
 		)
 
-	) else if ::cryImport.ddl_CryGame.selected == "KCD" then ( -- this is a hack
+	) else if ::cryImport.ddl_CryGame.selected == "KCD" then ( -- same as Ryse
+
+		-----------------------------------------------------------------------------------------
+		-- Obsolete - do nothing
+		if struct2fill.nFlags == iEFlags_MESH_SUBSETS_CHUNK_DESC_0800.SH_HAS_DECOMPR_MAT then (
+		)
 	
-		local boneFlag = 0x00000006
-		local boneFlag2 = 0x00000016
-		local boneFlag3	= 0x0000001E
- 		--local boneFlag4 = 0x00000014	--cga
-		local boneFlag5	= 0x00000002 --Cabal2	
-		-----------------------------------------------
-		local staticFlag4 = 0x00000014	--cga
-		local staticFlag = 0x00000004
-		
-		if 	struct2fill.nFlags == boneFlag 	OR \
-			struct2fill.nFlags == boneFlag2 OR \
-			struct2fill.nFlags == boneFlag3 OR \
- 			--struct2fill.nFlags == boneFlag4 OR
-			struct2fill.nFlags == boneFlag5	then (
+		-----------------------------------------------------------------------------------------
+		-- Just arrBoneIDs
+		if struct2fill.nFlags == iEFlags_MESH_SUBSETS_CHUNK_DESC_0800.BONEINDICES then (
 
 			for n=1 to struct2fill.nCount do ( --we loop n number of times (that is the number of subsets as given by nCount - a boneset for each submesh)
 			
@@ -3411,33 +3405,51 @@ fn read_MESH_SUBSETS_CHUNK_DESC_0800_v2 &bstream: \
 				)
 				
 				Append 	struct2fill.MeshBoneSubsetsArr inst_MeshBoneIDs
+			)	
+
+		) 
+		-----------------------------------------------------------------------------------------
+		-- Just Texel Density
+		else if struct2fill.nFlags == iEFlags_MESH_SUBSETS_CHUNK_DESC_0800.HAS_SUBSET_TEXEL_DENSITY then ( -- If has MeshSubsetTexelDensity
+
+			for n=1 to struct2fill.nCount do (
+
+				inst_MeshSubsetTexelDensity = MeshSubsetTexelDensity()
+				inst_MeshSubsetTexelDensity.TexelDensity = readfloat bstream
+				Append struct2fill.MeshSubsetTexelDensity inst_MeshSubsetTexelDensity
 			)			
+			
+		) 
+		-----------------------------------------------------------------------------------------
+		-- Both arrBoneIDs and Texel density
+		else if struct2fill.nFlags == (iEFlags_MESH_SUBSETS_CHUNK_DESC_0800.BONEINDICES + iEFlags_MESH_SUBSETS_CHUNK_DESC_0800.HAS_SUBSET_TEXEL_DENSITY) then (
 
-			matrix = matrix3 1
+			-- arrBoneIDs
+			for n=1 to struct2fill.nCount do ( --we loop n number of times (that is the number of subsets as given by nCount - a boneset for each submesh)
+			
+				--Create struct
+				local inst_MeshBoneIDs = MeshBoneIDs()
+
+				inst_MeshBoneIDs.numBoneIDs = readlong bstream #unsigned
+				--Each subset bone description chunk is 260 bytes long (4 + 256) former is uint32 numBonesIds, and the rest is uint16 bone IDs
+				for b=1 to inst_MeshBoneIDs.arrBoneIDs_length do (
+					id = readshort bstream #unsigned
+					Append inst_MeshBoneIDs.arrBoneIDs id
+				)
 				
-			read_Matrix bstream: &bstream \
-						matrix: &matrix \
-						struct2Fill: &struct2fill
-			
-			
-		)-- End of reading bones ids
-		else if struct2fill.nFlags == staticFlag  OR \
-				struct2fill.nFlags == staticFlag4 then ( -- If has MeshSubsetTexelDensity
-		
-			local point3_HFR = point3 0 0 0
-			point3_HFR[1] = readfloat bstream
-			point3_HFR[2] = readfloat bstream
-			point3_HFR[3] = readfloat bstream
-			struct2fill.point3_HFR = point3_HFR
+				Append 	struct2fill.MeshBoneSubsetsArr inst_MeshBoneIDs
+			)	
 
-		) else if struct2fill.nFlags == 0x00000002 then (
+			-- Texel density
+			for n=1 to struct2fill.nCount do (
+
+				inst_MeshSubsetTexelDensity = MeshSubsetTexelDensity()
+				inst_MeshSubsetTexelDensity.TexelDensity = readfloat bstream
+				Append struct2fill.MeshSubsetTexelDensity inst_MeshSubsetTexelDensity
+			)	
 		)
 
 	) else ( --default 
-
-		local boneFlag = 0x0006 -- EFlags: 0x0002 + 0x0004
-		-----------------------------------------------
-		local staticFlag = 0x0004
 		
 		-----------------------------------------------------------------------------------------
 		-- Just arrBoneIDs
