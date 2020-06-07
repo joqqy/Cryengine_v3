@@ -1476,7 +1476,7 @@ fn read_CGF_STREAM_POSITIONS \
 												&info_MeshSubset: \
 												&StreamStruct2fill: =
 (
-	local game = ::cryImport.ddl_CryGame.selected
+	local game = ::cryImporter.ddl_CryGame.selected
 	
 	if game == "Ryse" then
 	(
@@ -1783,7 +1783,7 @@ fn read_CGF_STREAM_NORMALS \
 											&info_MeshSubset: \
 											&StreamStruct2fill: =
 (
-	local game = ::cryImport.ddl_CryGame.selected 
+	local game = ::cryImporter.ddl_CryGame.selected 
 	
 	if game == "Ryse" then
 	(
@@ -1861,7 +1861,7 @@ fn read_CGF_STREAM_TEXCOORDS \
 													&info_MeshSubset: \
 													&StreamStruct2fill: =
 (
-	local game = ::cryImport.ddl_CryGame.selected 
+	local game = ::cryImporter.ddl_CryGame.selected 
 	
 	if game == "Ryse" then
 	(
@@ -2001,7 +2001,7 @@ fn read_CGF_STREAM_INDICES \
 											&info_MeshSubset: \
 											&StreamStruct2fill: =
 (	
-	local game = ::cryImport.ddl_CryGame.selected	
+	local game = ::cryImporter.ddl_CryGame.selected	
 	
 	if game == "Ryse" then
 	(
@@ -2245,7 +2245,7 @@ fn read_CGF_STREAM_TANGENTS \
 (
 	--View the read tangents in the console with ***::_LOADEDm[1].g_ECgfStreamType[n].CGF_STREAM_TANGENTS***
 	
-	local game = ::cryImport.ddl_CryGame.selected 
+	local game = ::cryImporter.ddl_CryGame.selected 
 	
 	if game == "Ryse" then
 	(
@@ -2425,7 +2425,7 @@ fn read_CGF_STREAM_BONEMAPPING &bstream: \
 
 	ienum_ECgfStreamType = enum_ECgfStreamType()						   	
 
-	local game = ::cryImport.ddl_CryGame.selected
+	local game = ::cryImporter.ddl_CryGame.selected
 
 
 	if struct2read.nStreamType == ienum_ECgfStreamType.CGF_STREAM_BONEMAPPING then (
@@ -2760,12 +2760,12 @@ fn read_STREAM_DATA_CHUNK_DESC_0800 \
 							format "#### ftell bstream: %\n" (ftell bstream)
 						)
 						
--- 						if ::cryImport.ddl_CryGame.selected == "HFR" then
+-- 						if ::cryImporter.ddl_CryGame.selected == "HFR" then
 -- 						(
 -- 							struct2fill.nStreamType 	= readlong bstream
 -- 							struct2fill.nFlags 				= readlong bstream						
 -- 						)
--- 						else if ::cryImport.ddl_CryGame.selected == "Ryse" then
+-- 						else if ::cryImporter.ddl_CryGame.selected == "Ryse" then
 -- 						(
 							struct2fill.nFlags 				= readlong bstream
 							struct2fill.nStreamType 	= readlong bstream
@@ -3328,7 +3328,7 @@ fn read_MESH_SUBSETS_CHUNK_DESC_0800_v2 &bstream: \
 	--It seems that for Ryse, 0x0006 seems to indicate that it has bone indices (but below it says 0x0002, maybe we must test for both
 	--See CryHeaders.h 666
 	--HFR check
-	if ::cryImport.ddl_CryGame.selected == "HFR" then (
+	if ::cryImporter.ddl_CryGame.selected == "HFR" then (
 
 		-- the EFlags are extended for HFR and it sees that in the end, HFR reads a matrix(?)
 		-- So this is a mess right now. Not sure we even care since we do not care for HFR
@@ -3381,7 +3381,7 @@ fn read_MESH_SUBSETS_CHUNK_DESC_0800_v2 &bstream: \
 		) else if struct2fill.nFlags == 0x00000002 then (
 		)
 
-	) else if ::cryImport.ddl_CryGame.selected == "KCD" then ( -- same as Ryse
+	) else if ::cryImporter.ddl_CryGame.selected == "KCD" then ( -- same as Ryse
 
 		-----------------------------------------------------------------------------------------
 		-- Obsolete - do nothing

@@ -53,7 +53,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 	--//////////////////////////////// Script Checker (Runs on Startup ////////////////////////////////
 	--///////////////////////////////////////////////////////////////////////////////////////////////
 	---------------------------------------- ini Global - hardcoded filename ----------------------------------------
-	global g_iniFileName 				= "cryimport_v3.ini"
+	global g_iniFileName 				= "cryImporter_v3.ini"
 	global g_iniFile 						= (	pathConfig.ResolvePathSymbols (pathConfig.AppendPath 	sysInfo.tempdir	 g_iniFileName)	)
 	
 	--Create the ini file if it does not exist
@@ -281,11 +281,11 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 						try
 						(
 							--/////// Destroy dialogs and rollout clauses if applicable ///////					
-							if ::cryImport != undefined then
+							if ::cryImporter != undefined then
 							(
-								if iskindof ::cryImport RolloutClass then
+								if iskindof ::cryImporter RolloutClass then
 								(
-									DestroyDialog 			::cryImport
+									DestroyDialog 			::cryImporter
 								)
 							)
 							if ::rollout_Tools != undefined then
@@ -354,7 +354,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							format "*** *** *** *** *** *** END OF Could not destroy dialogs *** *** *** *** *** *** ***\n"
 						)
 
-						rollout cryImport "Cryengine Importer" width:290 height:170 category:3
+						rollout cryImporter "Cryengine Importer" width:290 height:170 category:3
 						(
 							button 'btn_view_ini' "View ini" pos:[177,4] width:96 height:25 align:#left
 							button 'btn_delete_ini' "del" pos:[152,4] width:25 height:25 align:#left tooltip:"Delete ini file" images:#((	(getdir #maxSysIcons) + "Dark\\Grips\\Cancel_24.png"	), (	(getdir #maxSysIcons) + "Dark\\Grips\\Cancel_24.png"	), 1, 1, 1, 1, 1, false)
@@ -376,7 +376,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							checkbox 'chk_Skip_LOD_Materials' "Skip $Lod Materials" pos:[13,305] width:125 height:19 enabled:true checked:false align:#left
 							checkbox 'chk_Skip_Proxy_Materials' "Skip Proxy Materials" pos:[150,305] width:252 height:19 enabled:false checked:false align:#left visible:false
 							
-							dropdownList 'ddl_CryGame' "CryEngine Game" pos:[8,340] width:265 height:40 items:#("Ryse", "Crysis(wip)", "Crysis 2(wip)", "Crysis 3(wip)", "Crysis Warhead(wip)", "Crysis Wars(wip)", "State of Decay(wip)", "HFR", "Armored Warfare", "KCD") align:#left enabled:true selection:8
+							dropdownList 'ddl_CryGame' "CryEngine Game" pos:[8,340] width:265 height:40 items:#("Ryse", "Crysis(wip)", "Crysis 2(wip)", "Crysis 3(wip)", "Crysis Warhead(wip)", "Crysis Wars(wip)", "State of Decay(wip)", "HFR", "Armored Warfare", "KCD") align:#left enabled:true selection:1
 							
 							--////////////////// Include //////////////////
 							include "include\\skinwrap_.ms"
@@ -392,7 +392,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							include "include\\cryFile_btn_loader_.ms"
 							--/////////////////////////////////////////////
 							
-							on cryImport open do
+							on cryImporter open do
 							(	
 								update_dirPath \
 														context:"global"
@@ -451,34 +451,34 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 													
 													btn_print_SkeletonList.enabled = true
 													skeleton_xml_path = ""
-													::cryImport.lbl_skeletonList_Loaded.text = "Skeleton List has been loaded"
+													::cryImporter.lbl_skeletonList_Loaded.text = "Skeleton List has been loaded"
 												)
 												else
 												(
 													btn_print_SkeletonList.enabled = false
 													format "This is not a valid xmlB file, aborting!: %\n" skeleton_xml_path
-													::cryImport.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
+													::cryImporter.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
 												)
 											)
 											else
 											(
 												btn_print_SkeletonList.enabled = false
 												format "The suffix of the SkeletonList is not .xml: %\n" skeleton_xml_path
-												::cryImport.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
+												::cryImporter.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
 											)
 										)
 										else
 										(
 											btn_print_SkeletonList.enabled = false
 											format "Cannot find: %\n" skeleton_xml_path
-											::cryImport.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
+											::cryImporter.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
 										)
 									)
 									else
 									(
 										btn_print_SkeletonList.enabled = false
 										format "Could not find: %\n" skeleton_xml_path
-										::cryImport.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
+										::cryImporter.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
 									)			
 								)
 								--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
@@ -489,7 +489,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 								format "g_Dont_Load_Skeleton: %\n" 							::g_Dont_Load_Skeleton
 								format "======= GameSDK path: % =======\n" 			::g_dirpath
 							)
-							on cryImport close do
+							on cryImporter close do
 							(
 								if (setdir #scripts ::g_scriptsDefault) then
 								(
@@ -501,17 +501,17 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 								)
 								gc()
 							)
-							on cryImport rolledUp state do
+							on cryImporter rolledUp state do
 							(
 								if NOT state then
 								(
 									--closed
-									CRYOP.size = [CRYOP.size[1], CRYOP.size[2]-cryImport.height]
+									CRYOP.size = [CRYOP.size[1], CRYOP.size[2]-cryImporter.height]
 								)
 								else
 								(
 									--open
-									CRYOP.size = [CRYOP.size[1], CRYOP.size[2]+cryImport.height]
+									CRYOP.size = [CRYOP.size[1], CRYOP.size[2]+cryImporter.height]
 								)
 							)				
 							on btn_delete_ini pressed do
@@ -577,14 +577,14 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 														
 														btn_print_SkeletonList.enabled = true
 														skeleton_xml_path = ""
-														::cryImport.lbl_skeletonList_Loaded.text = "Skeleton List has been loaded"
+														::cryImporter.lbl_skeletonList_Loaded.text = "Skeleton List has been loaded"
 													)	
 												)			
 											)
 											else
 											(
 												btn_print_SkeletonList.enabled = false
-												::cryImport.lbl_skeletonList_Loaded.text = "Skeleton List could not be found"
+												::cryImporter.lbl_skeletonList_Loaded.text = "Skeleton List could not be found"
 											)
 										)
 									)
@@ -2516,13 +2516,13 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 						addRollout 			::rollout_options 			::CRYOP  rolledUp:true
 						addRollout 			::rollout_Mesh_Options 		::CRYOP  rolledUp:true						
 						addRollout 			::rollout_Report 			::CRYOP rolledUp:true
-						addRollout 			::cryImport 				::CRYOP rolledUp:false
+						addRollout 			::cryImporter 				::CRYOP rolledUp:false
 						addRollout 			::rollout_Tools		 		::CRYOP rolledUp:true
 						addRollout 			::rollout_animation 		::CRYOP rolledUp:true
 						-- addRollout 			::rollout_Alert 					::CRYOP rolledUp:false --set runtime instead inside CryMat_XML_.ms
 						addRollout 			::rollout_About 			::CRYOP rolledUp:true					
 
-						CreateDialog 		::cryImport 	rolledUp:false width:120 height:200		
+						CreateDialog 		::cryImporter 	rolledUp:false width:120 height:200		
 						--//////////////////////////////////////////////////////////////////////////////////////
 					)
 					else

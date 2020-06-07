@@ -129,7 +129,7 @@ struct init_Builders
 		--/*		
 		try
 		(
-			local game = ::cryImport.ddl_CryGame.selected
+			local game = ::cryImporter.ddl_CryGame.selected
 			
 			local inst_BUILDERS = BUILDERS() --create instance of class	
 			if game == "Ryse" then

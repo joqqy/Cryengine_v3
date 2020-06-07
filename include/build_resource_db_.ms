@@ -152,7 +152,7 @@ struct build_resource_db
 							(
 								if (stricmp g_db_type "mtl") == 0 then
 								(
-									local curr_Game = (::cryImport.ddl_CryGame.items[::cryImport.ddl_CryGame.selection])
+									local curr_Game = (::cryImporter.ddl_CryGame.items[::cryImporter.ddl_CryGame.selection])
 									format "%%\n" "game;" curr_Game  to:fstream
 									
 									dotNet_readLines \
@@ -164,7 +164,7 @@ struct build_resource_db
 								)
 								else if (stricmp g_db_type "dds") == 0 then
 								(
-									local curr_Game = (::cryImport.ddl_CryGame.items[::cryImport.ddl_CryGame.selection])
+									local curr_Game = (::cryImporter.ddl_CryGame.items[::cryImporter.ddl_CryGame.selection])
 									format "%%\n" "game;" curr_Game  to:fstream
 									
 									dotNet_readLines_dds0 \
@@ -176,7 +176,7 @@ struct build_resource_db
 								)
 								else if (stricmp g_db_type "tif") == 0 then
 								(
-									local curr_Game = (::cryImport.ddl_CryGame.items[::cryImport.ddl_CryGame.selection])
+									local curr_Game = (::cryImporter.ddl_CryGame.items[::cryImporter.ddl_CryGame.selection])
 									format "%%\n" "game;" curr_Game  to:fstream
 									
 									dotNet_readLines_filtered \
@@ -311,7 +311,7 @@ struct build_resource_db
 				
 				local files_arr 						= Directory.GetFiles 	dir 	type		searchOption.AllDirectories
 				
-				local curr_Game = (::cryImport.ddl_CryGame.items[::cryImport.ddl_CryGame.selection])
+				local curr_Game = (::cryImporter.ddl_CryGame.items[::cryImporter.ddl_CryGame.selection])
 				format "%%\n" "game;" curr_Game  to:fstream
 				
 				for x in files_arr do

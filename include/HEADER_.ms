@@ -30,7 +30,7 @@ fn update_dirPath \
 (	
 -- 	if context == "global" then
 -- 	(
-		local curr_Game 	= (::cryImport.ddl_CryGame.items[::cryImport.ddl_CryGame.selection])
+		local curr_Game 	= (::cryImporter.ddl_CryGame.items[::cryImporter.ddl_CryGame.selection])
 		local gameDir		= (getINISetting ::g_iniFile "gameDirs" curr_Game) 
 -- 	)
 -- 	else if context == "local" then

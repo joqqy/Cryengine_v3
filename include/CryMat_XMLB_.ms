@@ -77,7 +77,7 @@ struct xmlB_PROCESSOR
 	(
 		if lineCount == 1 then
 		(
-			local curr_Game 		= (::cryImport.ddl_CryGame.items[::cryImport.ddl_CryGame.selection])
+			local curr_Game 		= (::cryImporter.ddl_CryGame.items[::cryImporter.ddl_CryGame.selection])
 			local check_game 	= filterString line2Check ";"
 			
 			if check_game.count == 2 then
@@ -4544,7 +4544,7 @@ struct xmlB_PROCESSOR
 -- 								&ddn_tkn: \
 -- 								&ddna_tkn: =
 	(
-		local game = (::cryImport.ddl_CryGame.items[::cryImport.ddl_CryGame.selection])
+		local game = (::cryImporter.ddl_CryGame.items[::cryImporter.ddl_CryGame.selection])
 		
 		case of
 		(
