@@ -428,16 +428,17 @@ struct create_bones
 		--*/
 	),
 
-	fn GET_0xCCCC0017_SUBSET_BONES_test2 pos_stream_id: \														
-								   &nStream: \
-								   nCount: \
-								   &inst_CDF_Model: \
-								   &inst_CDF_Attachment: \
-								   &inst_Sub_Meshes: \
-								   &_LOADED: \
-								   &_LOADEDm: \
-								   &CryBoneDescData_Comp: \
-								   &inst_skinwrap: = ( 
+	-- This didn't work for Ryse
+	fn GET_0x1017_SUBSET_BONES pos_stream_id: \														
+							   &nStream: \
+							   nCount: \
+							   &inst_CDF_Model: \
+							   &inst_CDF_Attachment: \
+							   &inst_Sub_Meshes: \
+							   &_LOADED: \
+							   &_LOADEDm: \
+							   &CryBoneDescData_Comp: \
+							   &inst_skinwrap: = ( 
 
 		format "----------------------->pointer nStream: %\n" (*nStream)
 		
@@ -458,7 +459,8 @@ struct create_bones
 						format "----------------------->numBoneIDs: %\n" numBoneIDs
 
 
-
+						-- Here is the change - and WARNING, it didn't work, the bones was in correct ordering in MeshBoneSubsetsArr[i].arrBoneIDs and
+						-- when we reset the array and started the count and rearranged them, all got messed up. This must be tested further with KCD since it uses this method.
 						-----------------------------------------------------------------------------------
 						-- hack fill, and notice we start from 0 - but this is still just a test
 						MeshBoneSubsetsArr[i].arrBoneIDs = #()
@@ -537,6 +539,7 @@ struct create_bones
 			)
 		)
 		
+		-- Original Ryse method
 		GET_0xCCCC0017_SUBSET_BONES pos_stream_id: pos_stream_id \														
 									nStream: &nStream \
 									nCount: nCount \
@@ -548,16 +551,17 @@ struct create_bones
 									CryBoneDescData_Comp: &CryBoneDescData_Comp \
 									inst_skinwrap: &inst_skinwrap
 
-		-- GET_0xCCCC0017_SUBSET_BONES_test2 pos_stream_id: pos_stream_id \														
-		-- 								  nStream: &nStream \
-		-- 								  nCount: nCount \
-		-- 								  inst_CDF_Model: &inst_CDF_Model \
-		-- 								  inst_CDF_Attachment: &inst_CDF_Attachment \
-		-- 								  inst_Sub_Meshes: &inst_Sub_Meshes \
-		-- 								  _LOADED: &_LOADED \
-		-- 								  _LOADEDm: &_LOADEDm \
-		-- 								  CryBoneDescData_Comp: &CryBoneDescData_Comp \
-		-- 								  inst_skinwrap: &inst_skinwrap
+		-- -- KCD method, DID NOT WORK
+		-- GET_0x1017_SUBSET_BONES pos_stream_id: pos_stream_id \														
+		-- 						nStream: &nStream \
+		-- 						nCount: nCount \
+		-- 						 inst_CDF_Model: &inst_CDF_Model \
+		-- 						inst_CDF_Attachment: &inst_CDF_Attachment \
+		-- 						inst_Sub_Meshes: &inst_Sub_Meshes \
+		-- 						_LOADED: &_LOADED \
+		-- 						_LOADEDm: &_LOADEDm \
+		-- 						CryBoneDescData_Comp: &CryBoneDescData_Comp \
+		-- 						inst_skinwrap: &inst_skinwrap
 	),
 	
 	fn BONE_CONSTRUCTOR \	
