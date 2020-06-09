@@ -3559,40 +3559,41 @@ struct BUILDERS
 						inst_Sub_Meshes.nStream 		= nStream
 						-------------------------------------------------------------
 
-						-- The Mditable_Mesh class
-						msh = undefined
+						-- Will hold the meshes we build, for later access when we want to delete the iso vertices
+						global g_MSH = #()						
 						
 						if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[1] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
-							_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
-						(
-							local tm						= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
-							local ObjectID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
-							local ParentID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
+							_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then ( --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
+						
+							local tm = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
+							local ObjectID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
+							local ParentID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
 							
-							local pos_stream_id		= 1				
+							local pos_stream_id	= 1				
 							local nCount = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nCount
 							
-							if ::rollout_Report.chk_BUILDER_Report.state then
-							(
+							if ::rollout_Report.chk_BUILDER_Report.state then (
 								format "*** ### *** ### *** nCount: % *** ### *** ### ***\n" nCount
 							)
 							------------------------------------------------------------------------------
+
+							-- The Mditable_Mesh class
+							msh = undefined
 							
-							for n=1 to nCount do
-							(
-								if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr.count == nCount then --!!!!!!
-								(
-									local nFirstIndexId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstIndexId
-									local nNumIndices 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumIndices
-									local nFirstVertId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstVertId
-									local nNumVerts 			= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumVerts
-									local nMatID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nMatID
-									local vCenter				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].vCenter
-									
-															
+							
+							for n=1 to nCount do (
+
+								if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr.count == nCount then ( --!!!!!!
+								
+									local nFirstIndexId = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstIndexId
+									local nNumIndices = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumIndices
+									local nFirstVertId = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstVertId
+									local nNumVerts = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumVerts
+									local nMatID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nMatID
+									local vCenter = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].vCenter
 									
 									-------------------------------------------------------------						
-									Append		inst_Sub_Meshes.nCount		n
+									Append	inst_Sub_Meshes.nCount	n
 									-------------------------------------------------------------
 									
 									BUILDER	\	
@@ -3621,6 +3622,8 @@ struct BUILDERS
 													inst_Sub_Meshes:				&inst_Sub_Meshes \
 													inst_CDF_Attachment: 			&inst_CDF_Attachment \
 													pos_stream_id:					pos_stream_id
+
+									Append ::g_MSH msh -- append to global array for later access when we will delete the iso verts				
 								)
 							)
 							------------------------------------------------------------------------------
@@ -3679,14 +3682,11 @@ struct BUILDERS
 								)
 							)							
 						)	
-						-- else if nFlags == 0x00000004 then --static
-						-- (
-						-- 	--////////////////////// Delete isolated vertices for static assets if chosen by the user //////////////////////
-						-- 	delete_iso_vertices msh: &msh
-						-- )
-						-- TEST v2
-						delete_iso_vertices msh: &msh
 
+						-- TEST v2
+						for msh in g_MSH do (
+							delete_iso_vertices msh: &msh
+						)
 					)
 				)
 				else
