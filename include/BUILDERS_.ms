@@ -3684,7 +3684,7 @@ struct BUILDERS
 							)							
 						)	
 
-						-- TEST v2 
+						-- TEST v2 - We should in any case, instead of building submeshes, build the whole mesh, thus eliminating our need to delete vertices etc.
 						-- but there was still some issues, for example in the Ryse elephant body, there were some vertices that lost their skinning
 						-- However not sure if it is because the actual deletion of the vertices or if there is something wrong with our skinning process itself.
 						-- obviusly we are deleting some verts that were referred to by the bones(?)
