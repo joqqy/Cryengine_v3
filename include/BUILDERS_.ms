@@ -86,17 +86,26 @@ struct BUILDERS
 		format "nStreamChunkID: %\n" _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID
 	),
 	
-	fn delete_iso_vertices \
-									&msh: =
-	(
+	fn delete_iso_vertices &msh: = (
+
 		--////////////////////// Delete isolated vertices for static assets if chosen by the user //////////////////////
-		if ::cryImporter.chk_deleteISOvertices.state then
-		(
+		if ::cryImporter.chk_deleteISOvertices.state then (
+
 			if 	isvalidNode msh AND \
-			(classof msh) == Editable_Mesh then
-			(
-				format "Deleting isolated vertices...Please Wait...\n"
-				meshop.deleteIsoVerts msh
+			(classof msh) == Editable_Mesh then (
+
+				print"<<<< <<<< <<<< ................................................... >>>> >>>> >>>>"
+				print "Deleting isolated vertices...Please Wait..."
+				print "WARNING: I consider this a hack, we should build the sub-meshes properly and exactly instead, if it is possible."
+				print"<<<< <<<< <<<< ................................................... >>>> >>>> >>>>"
+			
+				meshop.deleteIsoVerts msh -- Deletes all vertices not used by a face.
+
+			) else (
+
+				print"<<<< <<<< <<<< ||||||||||||||||||||||||||||||||||||||||||||||||||| >>>> >>>> >>>>"				
+				print "WARNING: FAILED TO DELETE ISOLATED VERTICES - msh IS NOT A VALID NODE"
+				print"<<<< <<<< <<<< ||||||||||||||||||||||||||||||||||||||||||||||||||| >>>> >>>> >>>>"
 			)
 		)
 	),
@@ -3549,6 +3558,9 @@ struct BUILDERS
 						-------------------------------------------------------------
 						inst_Sub_Meshes.nStream 		= nStream
 						-------------------------------------------------------------
+
+						-- The Mditable_Mesh class
+						msh = undefined
 						
 						if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[1] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
 							_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
@@ -3577,7 +3589,7 @@ struct BUILDERS
 									local nMatID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nMatID
 									local vCenter				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].vCenter
 									
-									msh = unsupplied						
+															
 									
 									-------------------------------------------------------------						
 									Append		inst_Sub_Meshes.nCount		n
@@ -3631,12 +3643,11 @@ struct BUILDERS
 						)
 						
 						---------------------------------- Build Skeleton ---------------------------------
-						if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then
-						(
-							local nFlags = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags	
+						local nFlags = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags	
+						if nFlags == 0x0006 OR nFlags == 0x0002 then ( -- has bones							
 
-							if nFlags == 0x00000006 then --has bones
-							(
+							if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then (
+
 								GET_CryBoneDescData_Comp \
 																		_LOADED: 					&_LOADED \
 																		_LOADEDm: 				&_LOADEDm \
@@ -3648,31 +3659,34 @@ struct BUILDERS
 																		nCount:						n \ 								
 																		inst_Sub_Meshes: 		&inst_Sub_Meshes \
 																		inst_CDF_Model:			&inst_CDF_Model \
-																		inst_CDF_Attachment: 	&inst_CDF_Attachment
-							)
-							else if nFlags == 0x00000004 then --static
-							(
-								--////////////////////// Delete isolated vertices for static assets if chosen by the user //////////////////////
-								delete_iso_vertices \
-															msh: &msh
-							)
+																		inst_CDF_Attachment: 	&inst_CDF_Attachment							
 							
-							if (stricmp (typeCaller as string) "CA_BONE") == 0 then
-							(
-								link_CA_BONE_toParent \
-																_LOADED: 					&_LOADED \
-																_LOADEDm: 				&_LOADEDm \
-																caller: 						caller	\
-																nodeCaller: 				nodeCaller \
-																typeCaller: 					typeCaller \
-																pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
-																nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
-																nCount:						n \ 								
-																inst_Sub_Meshes: 		&inst_Sub_Meshes \
-																inst_CDF_Model:			&inst_CDF_Model \
-																inst_CDF_Attachment: 	&inst_CDF_Attachment
-							)	
-						)						
+							
+								if (stricmp (typeCaller as string) "CA_BONE") == 0 then
+								(
+									link_CA_BONE_toParent \
+																	_LOADED: 					&_LOADED \
+																	_LOADEDm: 				&_LOADEDm \
+																	caller: 						caller	\
+																	nodeCaller: 				nodeCaller \
+																	typeCaller: 					typeCaller \
+																	pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
+																	nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
+																	nCount:						n \ 								
+																	inst_Sub_Meshes: 		&inst_Sub_Meshes \
+																	inst_CDF_Model:			&inst_CDF_Model \
+																	inst_CDF_Attachment: 	&inst_CDF_Attachment
+								)
+							)							
+						)	
+						-- else if nFlags == 0x00000004 then --static
+						-- (
+						-- 	--////////////////////// Delete isolated vertices for static assets if chosen by the user //////////////////////
+						-- 	delete_iso_vertices msh: &msh
+						-- )
+						-- TEST v2
+						delete_iso_vertices msh: &msh
+
 					)
 				)
 				else
@@ -4216,8 +4230,8 @@ struct BUILDERS
 										&g_cryFile_m: \
 										&inst_CDF_Model: \
 										&inst_CDF_Attachment: \
-										&inst_Sub_Meshes: =
-	(	
+										&inst_Sub_Meshes: = (	
+
 		local inst_assetTypes						= assetTypes()
 		
 		inst_assetTypes.g_cryFile					= ::g_cryFile
