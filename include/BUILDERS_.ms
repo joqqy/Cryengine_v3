@@ -3648,7 +3648,8 @@ struct BUILDERS
 						
 						---------------------------------- Build Skeleton ---------------------------------
 						local nFlags = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags	
-						if nFlags == 0x0006 OR nFlags == 0x0002 then ( -- has bones							
+						if nFlags == 0x0002 OR \ 
+						   nFlags == (0x0002 + 0x0004) then ( -- see MESH_CHUNK_DESC_0801.EFlags				
 
 							if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then (
 
