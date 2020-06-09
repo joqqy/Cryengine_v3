@@ -300,37 +300,32 @@ struct create_bones
 		)
 	),
 	
-	fn ADD_BONES_2_SKIN \
-									pos_stream_id: \									
-									&nStream: \
-									&inst_CDF_Model: \
-									&inst_CDF_Attachment: \
-									&inst_Sub_Meshes: \
-									nCount: \									
-									&_LOADED: \
-									&_LOADEDm: \
-									&CryBoneDescData_Comp: \	
-									&inst_skinwrap: =
-	(
+	fn ADD_BONES_2_SKIN pos_stream_id: \									
+						&nStream: \
+						&inst_CDF_Model: \
+						&inst_CDF_Attachment: \
+						&inst_Sub_Meshes: \
+						nCount: \									
+						&_LOADED: \
+						&_LOADEDm: \
+						&CryBoneDescData_Comp: \	
+						&inst_skinwrap: = (
+
 		max modify mode
 		
-		if inst_Sub_Meshes.subMeshes.count > 0 then
-		(
-			for m=1 to inst_Sub_Meshes.subMeshes.count do
-			(				
+		if inst_Sub_Meshes.subMeshes.count > 0 then (
+			for m=1 to inst_Sub_Meshes.subMeshes.count do (				
 				local msh = inst_Sub_Meshes.subMeshes[m]
 				
-				for _mod in msh.modifiers do
-				(
-					if classof _mod == skin then
-					(
+				for _mod in msh.modifiers do (
+					if classof _mod == skin then (
+
 						theSkin = _mod
 						modPanel.setCurrentObject theSkin
 						
-						if inst_Sub_Meshes.SKINBONES_FROM_0xCCCC0017[m] != undefined then
-						(
-							for i=1 to inst_Sub_Meshes.SKINBONES_FROM_0xCCCC0017[m].count do
-							(
+						if inst_Sub_Meshes.SKINBONES_FROM_0xCCCC0017[m] != undefined then (
+							for i=1 to inst_Sub_Meshes.SKINBONES_FROM_0xCCCC0017[m].count do (
+								
 								local _bone = inst_Sub_Meshes.SKINBONES_FROM_0xCCCC0017[m][i]
 								skinOps.addbone theSkin _bone 1
 							)
@@ -339,17 +334,16 @@ struct create_bones
 				)				
 			)
 			
-			SET_VERT_WEIGHTS_TO_ZERO \
-														pos_stream_id: 				pos_stream_id \														
-														nStream:						&nStream \
-														nCount: 						nCount \
-														inst_CDF_Model:				&inst_CDF_Model \
-														inst_CDF_Attachment:		&inst_CDF_Attachment \
-														inst_Sub_Meshes:			&inst_Sub_Meshes \
-														_LOADED:						&_LOADED \
-														_LOADEDm:						&_LOADEDm \
-														CryBoneDescData_Comp:	&CryBoneDescData_Comp \
-														inst_skinwrap: 				&inst_skinwrap
+			SET_VERT_WEIGHTS_TO_ZERO pos_stream_id: pos_stream_id \														
+									 nStream: &nStream \
+									 nCount: nCount \
+									 inst_CDF_Model: &inst_CDF_Model \
+									 inst_CDF_Attachment: &inst_CDF_Attachment \
+									 inst_Sub_Meshes: &inst_Sub_Meshes \
+									 _LOADED: &_LOADED \
+									 _LOADEDm: &_LOADEDm \
+									 CryBoneDescData_Comp: &CryBoneDescData_Comp \
+									 inst_skinwrap: &inst_skinwrap
 		)
 	),	
 	

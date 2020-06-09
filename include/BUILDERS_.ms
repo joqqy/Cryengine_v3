@@ -3688,9 +3688,9 @@ struct BUILDERS
 						-- but there was still some issues, for example in the Ryse elephant body, there were some vertices that lost their skinning
 						-- However not sure if it is because the actual deletion of the vertices or if there is something wrong with our skinning process itself.
 						-- obviusly we are deleting some verts that were referred to by the bones(?)
-						for msh in g_MSH do (
-							delete_iso_vertices msh: &msh
-						)
+						-- for msh in g_MSH do (
+						-- 	delete_iso_vertices msh: &msh
+						-- )
 					)
 				)
 				else
