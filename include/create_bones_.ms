@@ -353,18 +353,17 @@ struct create_bones
 		)
 	),	
 	
-	fn GET_0xCCCC0017_SUBSET_BONES \
-														pos_stream_id: \														
-														&nStream: \
-														nCount: \
-														&inst_CDF_Model: \
-														&inst_CDF_Attachment: \
-														&inst_Sub_Meshes: \
-														&_LOADED: \
-														&_LOADEDm: \
-														&CryBoneDescData_Comp: \
-														&inst_skinwrap: =
-	( 
+	fn GET_0xCCCC0017_SUBSET_BONES pos_stream_id: \														
+								   &nStream: \
+								   nCount: \
+								   &inst_CDF_Model: \
+								   &inst_CDF_Attachment: \
+								   &inst_Sub_Meshes: \
+								   &_LOADED: \
+								   &_LOADEDm: \
+								   &CryBoneDescData_Comp: \
+								   &inst_skinwrap: = ( 
+
 		format "----------------------->pointer nStream: %\n" (*nStream)
 		
 		--we will store the bones to apply to the skin (these bones are the ids listed in 0xCCCC0017 (note the id from the table in 0xCCCC0017  must be = id+1)
@@ -376,7 +375,7 @@ struct create_bones
 			(
 				if inst_Sub_Meshes.CA_SKIN_counter > 0 then
 				(
--- 					local CryBoneDescData_Comp 		= _LOADED[inst_Sub_Meshes.CA_SKIN_counter].g_CryBoneDescData_Comp --num bone subsets		
+					-- local CryBoneDescData_Comp 		= _LOADED[inst_Sub_Meshes.CA_SKIN_counter].g_CryBoneDescData_Comp --num bone subsets		
 					local MeshBoneSubsetsArr 				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[(*nStream)].MeshBoneSubsetsArr					
 					
 					for i=1 to MeshBoneSubsetsArr.count do
@@ -428,6 +427,85 @@ struct create_bones
 		)
 		--*/
 	),
+
+	fn GET_0xCCCC0017_SUBSET_BONES_test2 pos_stream_id: \														
+								   &nStream: \
+								   nCount: \
+								   &inst_CDF_Model: \
+								   &inst_CDF_Attachment: \
+								   &inst_Sub_Meshes: \
+								   &_LOADED: \
+								   &_LOADEDm: \
+								   &CryBoneDescData_Comp: \
+								   &inst_skinwrap: = ( 
+
+		format "----------------------->pointer nStream: %\n" (*nStream)
+		
+		--we will store the bones to apply to the skin (these bones are the ids listed in 0xCCCC0017 (note the id from the table in 0xCCCC0017  must be = id+1)
+		--so we will have to match the id+1 to the corresponding 1 based index in ::g_BONES_ARRAY !
+		--/*
+		if inst_Sub_Meshes != unsupplied then (
+			if inst_Sub_Meshes.CA_SKIN_counter != undefined then (
+				if inst_Sub_Meshes.CA_SKIN_counter > 0 then (
+
+					-- local CryBoneDescData_Comp = _LOADED[inst_Sub_Meshes.CA_SKIN_counter].g_CryBoneDescData_Comp --num bone subsets		
+					local MeshBoneSubsetsArr = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[(*nStream)].MeshBoneSubsetsArr					
+					
+					for i=1 to MeshBoneSubsetsArr.count do (
+
+						local skinBones_per_Subset = #()							
+						local numBoneIDs = MeshBoneSubsetsArr[i].numBoneIDs						
+						format "----------------------->numBoneIDs: %\n" numBoneIDs
+
+
+
+						-----------------------------------------------------------------------------------
+						-- hack fill, and notice we start from 0 - but this is still just a test
+						MeshBoneSubsetsArr[i].arrBoneIDs = #()
+						for boneID = 0 to numBoneIDs do (
+							Append MeshBoneSubsetsArr[i].arrBoneIDs boneID
+						)
+
+
+							
+						for idx = 1 to numBoneIDs do (
+
+							local theID	= MeshBoneSubsetsArr[i].arrBoneIDs[idx]									
+							for x=1 to ::g_BONES_ARRAY.count do (
+								if x == (theID + 1) then ( --as we wrote above, the id from the 0xCCCC0017 must be incremented with 1, because max is 1 based, whilst CryEngine uses 0 based indices
+
+									Appendifunique skinBones_per_Subset	::g_BONES_ARRAY[x]._bone
+								)
+							)
+						)
+							
+						Append inst_Sub_Meshes.SKINBONES_FROM_0xCCCC0017 skinBones_per_Subset
+							
+						if ::rollout_Report.chk_Create_Bones_Report.state then (
+
+							format "\n"
+							print "*** /// *** /// *** /// *** /// ***"	
+							print skinBones_per_Subset
+							print "*** /// *** /// *** /// *** /// ***"
+							format "\n"	
+						)
+					)
+				
+					ADD_BONES_2_SKIN pos_stream_id: pos_stream_id \												
+									 nStream: &nStream \
+									 nCount: nCount \
+									 inst_CDF_Model: &inst_CDF_Model \
+									 inst_CDF_Attachment: &inst_CDF_Attachment \
+									 inst_Sub_Meshes: &inst_Sub_Meshes \
+									 _LOADED: &_LOADED \
+									 _LOADEDm: &_LOADEDm \
+									 CryBoneDescData_Comp: &CryBoneDescData_Comp \
+									 inst_skinwrap: &inst_skinwrap			
+				)
+			)
+		)
+		--*/
+	),
 	
 	----Add skin modifier to all SubMeshes
 	fn ADD_SKIN_MODIFIER \
@@ -459,17 +537,27 @@ struct create_bones
 			)
 		)
 		
-		GET_0xCCCC0017_SUBSET_BONES \
-														pos_stream_id: 				pos_stream_id \														
-														nStream:						&nStream \
-														nCount:							nCount \
-														inst_CDF_Model:				&inst_CDF_Model \
-														inst_CDF_Attachment:		&inst_CDF_Attachment \
-														inst_Sub_Meshes:			&inst_Sub_Meshes \
-														_LOADED:						&_LOADED \
-														_LOADEDm:						&_LOADEDm \
-														CryBoneDescData_Comp:	&CryBoneDescData_Comp \
-														inst_skinwrap: 				&inst_skinwrap
+		GET_0xCCCC0017_SUBSET_BONES pos_stream_id: pos_stream_id \														
+									nStream: &nStream \
+									nCount: nCount \
+									inst_CDF_Model: &inst_CDF_Model \
+									inst_CDF_Attachment: &inst_CDF_Attachment \
+									inst_Sub_Meshes: &inst_Sub_Meshes \
+									_LOADED: &_LOADED \
+									_LOADEDm: &_LOADEDm \
+									CryBoneDescData_Comp: &CryBoneDescData_Comp \
+									inst_skinwrap: &inst_skinwrap
+
+		-- GET_0xCCCC0017_SUBSET_BONES_test2 pos_stream_id: pos_stream_id \														
+		-- 								  nStream: &nStream \
+		-- 								  nCount: nCount \
+		-- 								  inst_CDF_Model: &inst_CDF_Model \
+		-- 								  inst_CDF_Attachment: &inst_CDF_Attachment \
+		-- 								  inst_Sub_Meshes: &inst_Sub_Meshes \
+		-- 								  _LOADED: &_LOADED \
+		-- 								  _LOADEDm: &_LOADEDm \
+		-- 								  CryBoneDescData_Comp: &CryBoneDescData_Comp \
+		-- 								  inst_skinwrap: &inst_skinwrap
 	),
 	
 	fn BONE_CONSTRUCTOR \	

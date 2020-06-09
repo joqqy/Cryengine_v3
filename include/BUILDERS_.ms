@@ -3577,8 +3577,8 @@ struct BUILDERS
 							)
 							------------------------------------------------------------------------------
 
-							-- The Mditable_Mesh class
-							msh = undefined
+							-- The Editable_Mesh class
+							local msh = undefined
 							
 							
 							for n=1 to nCount do (
@@ -3623,7 +3623,8 @@ struct BUILDERS
 													inst_CDF_Attachment: 			&inst_CDF_Attachment \
 													pos_stream_id:					pos_stream_id
 
-									Append ::g_MSH msh -- append to global array for later access when we will delete the iso verts				
+									-- append the valid msh to the global array for later access when we will delete the iso verts					
+									Append ::g_MSH msh			
 								)
 							)
 							------------------------------------------------------------------------------
@@ -3683,7 +3684,10 @@ struct BUILDERS
 							)							
 						)	
 
-						-- TEST v2
+						-- TEST v2 
+						-- but there was still some issues, for example in the Ryse elephant body, there were some vertices that lost their skinning
+						-- However not sure if it is because the actual deletion of the vertices or if there is something wrong with our skinning process itself.
+						-- obviusly we are deleting some verts that were referred to by the bones(?)
 						for msh in g_MSH do (
 							delete_iso_vertices msh: &msh
 						)
