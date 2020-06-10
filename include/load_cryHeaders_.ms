@@ -126,7 +126,7 @@ struct ECgfStreamType
 	
 	--Vertex Mapping. -LoadStreamChunk<int>(mesh, chunk, CGF_STREAM_VERT_MATS, CMesh::VERT_MATS); CGFLoader.cpp 3543 
 	--VERT_MATS vertex format is SVF_P3S_C4B_T2S* m_pP3S_C4B_T2S; --see IindexedMesh.h 892:
-	/***** See VertexFormats.h 192
+	/* See VertexFormats.h 192
 	struct SVF_P3S_C4B_T2S
 	{
 		Vec3f16 xyz;
@@ -135,9 +135,9 @@ struct ECgfStreamType
 
 		AUTO_STRUCT_INFO;
 	};
-	******/
+	*/
 
-	/*****
+	/*
 	struct UCol
 	{
 		union
@@ -162,7 +162,7 @@ struct ECgfStreamType
 
 		AUTO_STRUCT_INFO;
 	};
-	*****/	
+	*/	
 	CGF_STREAM_VERT_MATS 		= #(),						--11 	*m_pVertMats* ??? see MeshCompiler.cpp 98
 	
 	
@@ -2746,16 +2746,16 @@ fn read_STREAM_DATA_CHUNK_DESC_0800 \
 							format "#### ftell bstream: %\n" (ftell bstream)
 						)
 						
--- 						if ::cryImporter.ddl_CryGame.selected == "HFR" then
--- 						(
--- 							struct2fill.nStreamType 	= readlong bstream
--- 							struct2fill.nFlags 				= readlong bstream						
--- 						)
--- 						else if ::cryImporter.ddl_CryGame.selected == "Ryse" then
--- 						(
+						-- if ::cryImporter.ddl_CryGame.selected == "HFR" then
+						-- (
+						-- 	struct2fill.nStreamType 	= readlong bstream
+						-- 	struct2fill.nFlags 				= readlong bstream						
+						-- )
+						-- else if ::cryImporter.ddl_CryGame.selected == "Ryse" then
+						-- (
 							struct2fill.nFlags 				= readlong bstream
 							struct2fill.nStreamType 	= readlong bstream
--- 						)
+						-- )
 
 						struct2fill.nCount			 	= readlong bstream
 						struct2fill.nElementSize	 	= readlong bstream
