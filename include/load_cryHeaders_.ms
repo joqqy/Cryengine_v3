@@ -1090,48 +1090,36 @@ fn read_MESH_PHYSICS_DATA_CHUNK_DESC_0800 \
 	)
 )
 
-fn fill_RANGE_ENTITY \
-								bstream \
-								struct2fill =
-(
-	struct2fill._name = ReadFixedString \
-													bstream:	&bstream \
-													fixedLen:	&struct2fill._name_count
+fn fill_RANGE_ENTITY &bstream: \
+					 &struct2fill: = (
+
+	struct2fill._name = ReadFixedString bstream: &bstream \
+										fixedLen: &struct2fill._name_count
 	
 	struct2fill.start = readlong bstream
 	struct2fill.end = readlong bstream
 )
 
-fn fill_TIMING_CHUNK_DESC_0918 \
-												bstream \
-												struct2fill =
-(
+fn fill_TIMING_CHUNK_DESC_0918  &bstream: \
+								&struct2fill: = (
+
 	struct2fill._obsolete_SecsPerTick = readfloat bstream --f32	
 	struct2fill._obsolete_TicksPerFrame = readlong bstream --int32
 	
 	struct2fill.global_range = RANGE_ENTITY()	
-	fill_RANGE_ENTITY \
-								bstream \
-								struct2fill.global_range
+	fill_RANGE_ENTITY bsteam: &bstream \
+					  struct2fill: &struct2fill.global_range
 	
 
-	struct2fill._obsolete_SubRanges = ReadDouble bstream --int32	
+	struct2fill._obsolete_SubRanges = readlong bstream -- int32	
 )
 
-fn fill_TIMING_CHUNK_DESC_0919 \
-												bstream \
-												struct2fill =
-(
-	struct2fill._obsolete_SecsPerTick = readfloat bstream --f32	
-	struct2fill._obsolete_TicksPerFrame = readlong bstream --int32
-	
-	struct2fill.global_range = RANGE_ENTITY()	
-	fill_RANGE_ENTITY \
-								bstream \
-								struct2fill.global_range
-	
+fn fill_TIMING_CHUNK_DESC_0919 &bstream: \
+							   &struct2fill: = (
 
-	struct2fill._obsolete_SubRanges = ReadDouble bstream --int32	
+	struct2fill.numberOfSamples = ReadLong bstream -- int32	
+	struct2fill.samplesPerSecond = ReadFloat bstream -- float
+	struct2fill.startTimeInSeconds = ReadFloat bstream -- float	
 )
 
 fn read_TIMING_CHUNK_DESC_0918 \
@@ -1172,9 +1160,8 @@ fn read_TIMING_CHUNK_DESC_0918 \
 					(	
 						struct2fill.chunkID = ID
 						
-						fill_TIMING_CHUNK_DESC_0918 \
-																	bstream \
-																	struct2fill
+						fill_TIMING_CHUNK_DESC_0918 bstream: &bstream \
+													struct2fill: &struct2fill
 					)
 				)
 				else if fileHeader.version == 0x0744 then
@@ -1185,9 +1172,8 @@ fn read_TIMING_CHUNK_DESC_0918 \
 						C == 0x0918 AND \						
 						F == struct2read.FileOffset[1][i] then
 					(
-						fill_TIMING_CHUNK_DESC_0918 \
-																	bstream \
-																	struct2fill
+						fill_TIMING_CHUNK_DESC_0918 bstream: &bstream \
+															 struct2fill: &struct2fill
 					)
 				)
 			)
@@ -2044,9 +2030,9 @@ fn read_CGF_STREAM_INDICES \
 				for v=1 to struct2read.nCount/3 do --this is the number of elements to read (3 for each face)
 				(
 					--Remember max index is 1-based (NOT zero based !) thus we need to add +1 to each index
-					local a 		= (readfloat bstream #unsigned)+idx_offset
-					local b 		= (readfloat bstream #unsigned)+idx_offset
-					local c 		= (readfloat bstream #unsigned)+idx_offset	
+					local a 		= (ReadLong bstream #unsigned)+idx_offset
+					local b 		= (ReadLong bstream #unsigned)+idx_offset
+					local c 		= (ReadLong bstream #unsigned)+idx_offset	
 					
 					Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
 				)
