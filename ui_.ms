@@ -238,6 +238,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 					--If we add more includes to our project (see include calls below), we must add them to this array as well
 					local include_files = #(
 													"HEADER_.ms", \
+													"Constants.ms", \
 													"general_functions_.ms", \
 													"build_resource_db_.ms", \
 													"CryMat_XMLB_headers_.ms", \
@@ -266,8 +267,9 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 					--Preprocessing - Checks that our includes do indeed exist		
 					if FOUND_DEPENDENCIES AND (getdir #scripts) == ::g_includePath  then
 					(			
-						--////////////////// Include //////////////////						
-						include "include\\HEADER_.ms"
+						--////////////////// Include //////////////////	
+						include "include\\Constants.ms"					
+						include "include\\HEADER_.ms"						
 						include "include\\general_functions_.ms"
 						include "include\\build_resource_db_.ms"
 						include "include\\CryMat_XMLB_headers_.ms"
@@ -2152,9 +2154,10 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 						
 						rollout rollout_Mesh_Options "Mesh Options" width:290 height:120 category:2
 						(
-							checkbox 'chk_Vertex_Normals' "Vertex Normals" pos:[16,17] width:255 height:21 align:#left checked:true enabled:true
-							checkbox 'chk_Vertex_Tangent_Normals' "Vertex Normals from Tangents" pos:[16,37] width:255 height:21 align:#left checked:true enabled:true
-							checkbox 'chk_Vertex_Colors' "Vertex Colors" pos:[16,57] width:255 height:21 align:#left checked:true enabled:true							
+							checkbox 'chk_Vertex_Normals' "Vertex Normals" pos: [16,17] width: 255 height: 21 align: #left checked: true enabled: true
+							-- TODO urgent chk_Vertex_Tangent_Normals is buggy and needs more research. Messes up normals (maybe not for skin but definitely for .cgf)
+							checkbox 'chk_Vertex_Tangent_Normals' "Vertex Normals from Tangents" pos: [16,37] width: 255 height: 21 align: #left checked: false enabled: true
+							checkbox 'chk_Vertex_Colors' "Vertex Colors" pos: [16,57] width: 255 height: 21 align: #left checked: true enabled: true								
 							
 							on rollout_Mesh_Options rolledUp state do
 							(

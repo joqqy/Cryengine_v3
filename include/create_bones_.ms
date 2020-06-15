@@ -587,10 +587,10 @@ struct create_bones
 			-------------------------------------------------------------------------------
 			
 			
-			local boneLength 				= 0.07	
-			local startPos 					= matrixB2W[4]
-			local endPos 						= (matrixB2W[4]) + (boneLength*(normalize matrixB2W[1]))
-			local zAxis 							= (normalize matrixB2W[3])	
+			local boneLength 	= 0.07	* ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+			local startPos 		= matrixB2W[4] * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+			local endPos 		= (matrixB2W[4]) + (boneLength*(normalize matrixB2W[1])) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+			local zAxis 		= (normalize matrixB2W[3])	
 										
 			local newbone;
 			local rootMatrix = matrix3 1 --unused				
@@ -650,9 +650,9 @@ struct create_bones
 			local matrixW2B 					= CryBoneDescData_Comp[idx].m_DefaultW2B
 			local matrixB2W 					= CryBoneDescData_Comp[idx].m_DefaultB2W
 				rotate matrixW2B (quat 0 0 0 1)
-			local boneLength 				= 0.07	
-			local startPos 					= matrixB2W[4]
-			local endPos 						= (matrixB2W[4]) + (boneLength*(normalize matrixB2W[1]))
+			local boneLength 				= 0.07	 * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+			local startPos 					= matrixB2W[4] * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+			local endPos 						= (matrixB2W[4]) + (boneLength*(normalize matrixB2W[1])) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 			local zAxis 							= (normalize matrixB2W[3])	
 										
 			local newbone;

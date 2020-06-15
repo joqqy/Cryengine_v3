@@ -1472,9 +1472,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(								
-					local x = (	readHalfFloat bstream:&bstream	)
-					local y = (	readHalfFloat bstream:&bstream	)
-					local z = (	readHalfFloat bstream:&bstream	)
+					local x = (readHalfFloat bstream:&bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR
+					local y = (readHalfFloat bstream:&bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR
+					local z = (readHalfFloat bstream:&bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR
 															
 					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
 															
@@ -1486,9 +1486,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
-					local z = (readfloat bstream)					
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR				
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
@@ -1503,9 +1503,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(								
-					local x = (	readHalfFloat bstream:&bstream	)
-					local y = (	readHalfFloat bstream:&bstream	)
-					local z = (	readHalfFloat bstream:&bstream	)
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 															
 					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
 															
@@ -1517,9 +1517,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
-					local z = (readfloat bstream)					
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR						
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
@@ -1534,9 +1534,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(								
-					local x = (	readHalfFloat bstream:&bstream	)
-					local y = (	readHalfFloat bstream:&bstream	)
-					local z = (	readHalfFloat bstream:&bstream	)
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 															
 					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
 															
@@ -1548,9 +1548,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(					
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
-					local z = (readfloat bstream)
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
@@ -1559,10 +1559,10 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 													readlong bstream
-					local z = (readfloat bstream)					
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR						
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
@@ -1574,9 +1574,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(								
-					local x = (	readHalfFloat bstream:&bstream	)
-					local y = (	readHalfFloat bstream:&bstream	)
-					local z = (	readHalfFloat bstream:&bstream	)
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 															
 					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
 															
@@ -1588,9 +1588,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
-					local z = (readfloat bstream)					
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR						
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
@@ -1600,9 +1600,9 @@ fn read_CGF_STREAM_POSITIONS \
 				for v=1 to struct2read.nCount do
 				(		
 					--Verts
-					local x = (	readHalfFloat bstream:&bstream	) --pos
-					local y = (	readHalfFloat bstream:&bstream	) --pos
-					local z = (	readHalfFloat bstream:&bstream	) --pos
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	 --pos
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	 --pos
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	 --pos
 					local id = readshort bstream
 				
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS_HFR[1] [x, y, z] --Custom StreamType for HFR
@@ -1636,9 +1636,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(								
-					local x = (	readHalfFloat bstream:&bstream	)
-					local y = (	readHalfFloat bstream:&bstream	)
-					local z = (	readHalfFloat bstream:&bstream	)
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 															
 					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
 															
@@ -1650,9 +1650,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(					
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
-					local z = (readfloat bstream)
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
@@ -1661,10 +1661,10 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 													readlong bstream
-					local z = (readfloat bstream)					
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR						
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
@@ -1676,9 +1676,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(								
-					local x = (	readHalfFloat bstream:&bstream	)
-					local y = (	readHalfFloat bstream:&bstream	)
-					local z = (	readHalfFloat bstream:&bstream	)
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 															
 					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
 															
@@ -1690,9 +1690,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
-					local z = (readfloat bstream)					
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR						
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
@@ -1702,9 +1702,9 @@ fn read_CGF_STREAM_POSITIONS \
 				for v=1 to struct2read.nCount do
 				(		
 					--Verts
-					local x = (	readHalfFloat bstream:&bstream	) --pos
-					local y = (	readHalfFloat bstream:&bstream	) --pos
-					local z = (	readHalfFloat bstream:&bstream	) --pos
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	 --pos
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	 --pos
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	 --pos
 					local id = readshort bstream
 				
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS_HFR[1] [x, y, z] --Custom StreamType for HFR
@@ -1738,9 +1738,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(								
-					local x = (	readHalfFloat bstream:&bstream	)
-					local y = (	readHalfFloat bstream:&bstream	)
-					local z = (	readHalfFloat bstream:&bstream	)
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
 															
 					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
 															
@@ -1752,9 +1752,9 @@ fn read_CGF_STREAM_POSITIONS \
 			(
 				for v=1 to struct2read.nCount do
 				(
-					local x = (readfloat bstream)
-					local y = (readfloat bstream)
-					local z = (readfloat bstream)					
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR						
 					
 					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
 				)
