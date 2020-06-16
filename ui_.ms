@@ -48,7 +48,8 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 	
 	Format "Max Version: %\n" g_max_version
 
-	reset_max()
+	-- TEST V2 We test turning this off, why really should we reset max? I think this is wrong
+	-- reset_max()
 
 	--//////////////////////////////// Script Checker (Runs on Startup ////////////////////////////////
 	--///////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,7 +370,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							
 							checkbox 'chk_skip_chr' "Don't load .chr" pos:[13,115] width:120 height:19 enabled:true checked:true align:#left
 							checkbox 'chk_Force_2_Base_Skeleton' "Force to Base Skeleton" pos:[13,135] width:150 height:19 enabled:true checked:true align:#left tooltip:"Recommended ON - but if you want to load multiple skeletons into a scene, then turn this off"
-							checkbox 'chk_reset' "Reset before skin load" pos:[13,155] width:120 height:19 enabled:true checked:true align:#left	
+							checkbox 'chk_reset' "Reset before skin load" pos:[13,155] width:120 height:19 enabled:true checked:false align:#left	
 							button 'btn_import' "LOAD CryFile..." pos:[8,118+60] width:265 height:40 toolTip:"Load CryFile (.cgf, .cgfm, .cga, .cgam, .chr, .chrm, .skin, .skinm)" align:#left
 							button 'btn_Load_CDF' "LOAD Character Definition..." pos:[8,158+60] width:265 height:40 toolTip:"This loads the Character Definition File ( .cdf )" align:#left							
 							
