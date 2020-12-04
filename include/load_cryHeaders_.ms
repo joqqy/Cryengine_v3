@@ -3055,7 +3055,7 @@ fn read_CryBoneDescData_Comp \
 (	
 	if FileOffset < _filePos then
 	(
-		local boneChunkData_size 	= ChunkSize - (_filePos - FileOffset)		
+		local boneChunkData_size = ChunkSize - (_filePos - FileOffset)		
 		
 		if (mod boneChunkData_size 584) == 0.0 then
 		(
@@ -3073,13 +3073,13 @@ fn read_CryBoneDescData_Comp \
 																				
 				--struct CryBonePhysics_Comp
 				--resetting the arrays as well
-				struct2Fill._min 					= #()
-				struct2Fill._max 					= #()
-				struct2Fill.spring_angle 			= #()
-				struct2Fill.spring_angle 			= #()
-				struct2Fill.spring_tension 		= #()
-				struct2Fill.damping 				= #()
-				struct2Fill.framemtx 				= #(#(),#(),#())
+				struct2Fill._min = #()
+				struct2Fill._max = #()
+				struct2Fill.spring_angle = #()
+				struct2Fill.spring_angle = #()
+				struct2Fill.spring_tension = #()
+				struct2Fill.damping = #()
+				struct2Fill.framemtx = #(#(),#(),#())
 				--------------------------------------
 				for p=1 to struct2Fill.m_PhysInfo_length do
 				(		
@@ -3201,7 +3201,7 @@ fn read_CryBoneDescData_Comp \
 			(
 				if inst_CDF_Model != undefined then
 				(
-					inst_CDF_Model.CryBoneDescData_Comp 			= ::g_CryBoneDescData_Comp
+					inst_CDF_Model.CryBoneDescData_Comp = ::g_CryBoneDescData_Comp
 				)
 			)
 			--/// Store the skin skeleton (same as .chr, but we store anyway - in case we don't load .chr) ///
@@ -3210,15 +3210,15 @@ fn read_CryBoneDescData_Comp \
 			(
 				if inst_CDF_Attachment != undefined then
 				(
-					inst_CDF_Attachment.CryBoneDescData_Comp 	= ::g_CryBoneDescData_Comp
+					inst_CDF_Attachment.CryBoneDescData_Comp = ::g_CryBoneDescData_Comp
 				)
 			)
 			else
 			(
-				inst_CDF_Model.CryBoneDescData_Comp 				= ::g_CryBoneDescData_Comp
-				inst_CDF_Attachment.CryBoneDescData_Comp 		= ::g_CryBoneDescData_Comp
+				inst_CDF_Model.CryBoneDescData_Comp = ::g_CryBoneDescData_Comp
+				inst_CDF_Attachment.CryBoneDescData_Comp = ::g_CryBoneDescData_Comp
 			)
-			
+	
 			--Make a backup storage of the compiled bone description
 			::g_stored_CryBoneDescData_Comp = deepCopy ::g_CryBoneDescData_Comp			
 		)
@@ -3734,9 +3734,9 @@ fn read_CHUNK_0017 \
 -- 			(
 				struct2fill 				= CryBoneDescData_Comp()
 			
-				fseek bstream struct2read.FileOffset[1][i] #seek_set
+				fseek bstream struct2read.FileOffset[1][i] #seek_set				
 
-				if struct2read.ChunkVersion[1][i] == 0x0800 then \ --0x0800				
+				if struct2read.ChunkVersion[1][i] == 0x0800 OR struct2read.ChunkVersion[1][i] == 0x0801 then \ --0x0800				
 				(
 					A 				= readshort bstream #unsigned 	--should be 0x0000 or 0x2000
 					B 				= readshort bstream #unsigned 	--should be 0xACDC
@@ -3754,26 +3754,25 @@ fn read_CHUNK_0017 \
 						format "IDxACDC: %\n" IDxACDC
 					)
 															
-					if fileHeader.version == 0x0745 then
-					(
+					if fileHeader.version == 0x0745 then (						
+
 						IDxACDC = readlong bstream --chunk ID --//new in version 0x0745
 																
 						--confirm we are on the right chunk
-						if  (A == 0x0000 OR A == 0x2000) AND \
-							B 			== 0xACDC AND \			
-							C 			== 0x0800 AND \
-							IDxACDC == struct2read.ChunkID[1][i] AND \
-							F 			== struct2read.FileOffset[1][i] then
-						(	
+						-- if  (A == 0x0000 OR A == 0x2000) AND \
+						-- 	 B == 0xACDC AND \			
+						-- 	(C == 0x0800 OR C == 0x0801) AND \
+						-- 	IDxACDC == struct2read.ChunkID[1][i] AND \
+						-- 	F == struct2read.FileOffset[1][i] then (								
+
 							fseek bstream struct2Fill.reserved #seek_cur
 																	
-							if ::g_Read_Comp_cryBones_Report then
-							(
+							if ::g_Read_Comp_cryBones_Report then (
 								format "We will now read the Compiled Crybones 0xACDC at fileposition: %\n" (ftell bstream)
 							)
 							
-							local ChunkSize 		= struct2read.ChunkPlusDescr_size[i]
-							local _filePos			= (ftell bstream)
+							local ChunkSize = struct2read.ChunkPlusDescr_size[i]
+							local _filePos = (ftell bstream)
 							
 							read_CryBoneDescData_Comp \
 																	bstream:			&bstream \
@@ -3790,9 +3789,10 @@ fn read_CHUNK_0017 \
 																			inst_CDF_Attachment: 		&inst_CDF_Attachment	\
 																			inst_Sub_Meshes:			&inst_Sub_Meshes
 							
-							print "read_CHUNK_0017 ************* read_CryBoneDescData_Comp ************* "
+							print "read_CHUNK_0017 ************* read_CryBoneDescData_Comp *************"
+							print ::g_stored_CryBoneDescData_Comp
 																	
-						)
+						-- )
 					)					
 				else if fileHeader.version == 0x0744 then
 				(
@@ -3856,7 +3856,7 @@ fn read_CHUNK_0017 \
 		)
 	)
 	
--- 	format "inst_CDF_Model.CryBoneDescData_Comp: %\n" inst_CDF_Model.CryBoneDescData_Comp
+	format "inst_CDF_Model.CryBoneDescData_Comp: %\n" inst_CDF_Model.CryBoneDescData_Comp
 	
 	--Initiate the Builders
 	inst_init_Builders = init_Builders()
