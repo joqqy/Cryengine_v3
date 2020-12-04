@@ -721,6 +721,8 @@ struct create_bones
 		
 		if _LOADED != unsupplied then
 		(
+			print "INSIDE Build_Skeleton"
+
 			if _LOADED != undefined then
 			(
 				if _LOADEDm != undefined then

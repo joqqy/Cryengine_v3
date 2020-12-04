@@ -3383,7 +3383,7 @@ struct BUILDERS
 				inst_create_bones = create_bones() --create struct
 				if ::g_Create_Bones_Report then ( inst_create_bones.Create_Bones_Report = true )
 						
-				inst_skinwrap = skinwrap()
+				inst_skinwrap = skinwrap()				
 				
 				inst_create_bones.CONSTRUCT_BONES \
 																		_LOADED:						&_LOADED \
@@ -4269,11 +4269,11 @@ struct BUILDERS
 						if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[1] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
 							_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
 						(
-							local tm						= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
-							local ObjectID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
-							local ParentID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
+							local tm = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
+							local ObjectID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
+							local ParentID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
 							
-							local pos_stream_id		= 1
+							local pos_stream_id	= 1
 							
 							local nCount = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nCount
 							
@@ -4347,9 +4347,13 @@ struct BUILDERS
 						if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then
 						(
 							local nFlags = ::g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags
+
+							format "nFlags: %\n" nFlags
 							
 							if nFlags == 0x00000006 then --has bones
-							(					
+							(			
+								
+								
 								Build_Skeleton \
 													_LOADED: 					&_LOADED \
 													_LOADEDm: 				&_LOADEDm \
