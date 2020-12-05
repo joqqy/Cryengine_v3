@@ -381,7 +381,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							checkbox 'chk_Skip_LOD_Materials' "Skip $Lod Materials" pos:[13,305] width:125 height:19 enabled:true checked:false align:#left
 							checkbox 'chk_Skip_Proxy_Materials' "Skip Proxy Materials" pos:[150,305] width:252 height:19 enabled:false checked:false align:#left visible:false
 							
-							dropdownList 'ddl_CryGame' "CryEngine Game" pos:[8,340] width:265 height:40 items:#("Ryse", "Crysis(wip)", "Crysis 2(wip)", "Crysis 3(wip)", "Crysis Warhead(wip)", "Crysis Wars(wip)", "State of Decay(wip)", "HFR", "Armored Warfare/ArcheAge", "KCD") align:#left enabled:true selection:9
+							dropdownList 'ddl_CryGame' "CryEngine Game" pos:[8,340] width:265 height:40 items:#("Ryse", "Crysis(wip)", "Crysis 2(wip)", "Crysis 3(wip)", "Crysis Warhead(wip)", "Crysis Wars(wip)", "State of Decay(wip)", "HFR", "Armored Warfare", "KCD") align:#left enabled:true selection:9
 							
 							--////////////////// Include //////////////////
 							include "include\\skinwrap_.ms"
