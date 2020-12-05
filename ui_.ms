@@ -1971,6 +1971,9 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							GroupBox 'grp_db_builder_scan' "Create Database Scanning Game Root" pos:[9,210] width:265 height:55 align:#left
 							button 'btn_set_scanBuild' "Build SCAN DB" pos:[20,232] width:245 height:25 align:#left
 							
+							-- TODO:
+							-- v2 it seems that creating the database did not work in max > 2017, but in max 2017 it worked. Not sure what is going on.
+							-- As for the KCD version of the script (it has a different code than the below - we tested it here but it didn't work - but did it work in max 2021?)
 							fn db_creation_ask \
 														caller: \
 														&db_type: =
