@@ -286,11 +286,11 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 						try
 						(
 							--/////// Destroy dialogs and rollout clauses if applicable ///////					
-							if ::cryImporter != undefined then
+							if ::rollout_cryImport != undefined then
 							(
-								if iskindof ::cryImporter RolloutClass then
+								if iskindof ::rollout_cryImport RolloutClass then
 								(
-									DestroyDialog 			::cryImporter
+									DestroyDialog 			::rollout_cryImport
 								)
 							)
 							if ::rollout_Tools != undefined then
@@ -359,7 +359,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							format "*** *** *** *** *** *** END OF Could not destroy dialogs *** *** *** *** *** *** ***\n"
 						)
 
-						rollout cryImporter "Cryengine Importer" width:290 height:170 category:3
+						rollout rollout_cryImport "Cryengine Importer" width:290 height:170 category:3
 						(
 							button 'btn_view_ini' "View ini" pos:[177,4] width:96 height:25 align:#left
 							button 'btn_delete_ini' "del" pos:[152,4] width:25 height:25 align:#left tooltip:"Delete ini file" images:#((	(getdir #maxSysIcons) + "Dark\\Grips\\Cancel_24.png"	), (	(getdir #maxSysIcons) + "Dark\\Grips\\Cancel_24.png"	), 1, 1, 1, 1, 1, false)
@@ -397,7 +397,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							include "include\\cryFile_btn_loader_.ms"
 							--/////////////////////////////////////////////
 							
-							on cryImporter open do
+							on rollout_cryImport open do
 							(	
 								update_dirPath \
 														context:"global"
@@ -456,34 +456,34 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 													
 													btn_print_SkeletonList.enabled = true
 													skeleton_xml_path = ""
-													::cryImporter.lbl_skeletonList_Loaded.text = "Skeleton List has been loaded"
+													::rollout_cryImport.lbl_skeletonList_Loaded.text = "Skeleton List has been loaded"
 												)
 												else
 												(
 													btn_print_SkeletonList.enabled = false
 													format "This is not a valid xmlB file, aborting!: %\n" skeleton_xml_path
-													::cryImporter.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
+													::rollout_cryImport.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
 												)
 											)
 											else
 											(
 												btn_print_SkeletonList.enabled = false
 												format "The suffix of the SkeletonList is not .xml: %\n" skeleton_xml_path
-												::cryImporter.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
+												::rollout_cryImport.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
 											)
 										)
 										else
 										(
 											btn_print_SkeletonList.enabled = false
 											format "Cannot find: %\n" skeleton_xml_path
-											::cryImporter.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
+											::rollout_cryImport.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
 										)
 									)
 									else
 									(
 										btn_print_SkeletonList.enabled = false
 										format "Could not find: %\n" skeleton_xml_path
-										::cryImporter.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
+										::rollout_cryImport.lbl_skeletonList_Loaded.text = "Could not locate the Skeleton List"
 									)			
 								)
 								--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
@@ -494,7 +494,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 								format "g_Dont_Load_Skeleton: %\n" 							::g_Dont_Load_Skeleton
 								format "======= GameSDK path: % =======\n" 			::g_dirpath
 							)
-							on cryImporter close do
+							on rollout_cryImport close do
 							(
 								if (setdir #scripts ::g_scriptsDefault) then
 								(
@@ -506,17 +506,17 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 								)
 								gc()
 							)
-							on cryImporter rolledUp state do
+							on rollout_cryImport rolledUp state do
 							(
 								if NOT state then
 								(
 									--closed
-									CRYOP.size = [CRYOP.size[1], CRYOP.size[2]-cryImporter.height]
+									CRYOP.size = [CRYOP.size[1], CRYOP.size[2]-rollout_cryImport.height]
 								)
 								else
 								(
 									--open
-									CRYOP.size = [CRYOP.size[1], CRYOP.size[2]+cryImporter.height]
+									CRYOP.size = [CRYOP.size[1], CRYOP.size[2]+rollout_cryImport.height]
 								)
 							)				
 							on btn_delete_ini pressed do
@@ -582,14 +582,14 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 														
 														btn_print_SkeletonList.enabled = true
 														skeleton_xml_path = ""
-														::cryImporter.lbl_skeletonList_Loaded.text = "Skeleton List has been loaded"
+														::rollout_cryImport.lbl_skeletonList_Loaded.text = "Skeleton List has been loaded"
 													)	
 												)			
 											)
 											else
 											(
 												btn_print_SkeletonList.enabled = false
-												::cryImporter.lbl_skeletonList_Loaded.text = "Skeleton List could not be found"
+												::rollout_cryImport.lbl_skeletonList_Loaded.text = "Skeleton List could not be found"
 											)
 										)
 									)
@@ -2772,13 +2772,13 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 						addRollout 			::rollout_options 			::CRYOP  rolledUp:true
 						addRollout 			::rollout_Mesh_Options 		::CRYOP  rolledUp:true						
 						addRollout 			::rollout_Report 			::CRYOP rolledUp:true
-						addRollout 			::cryImporter 				::CRYOP rolledUp:false
+						addRollout 			::rollout_cryImport 				::CRYOP rolledUp:false
 						addRollout 			::rollout_Tools		 		::CRYOP rolledUp:true
 						addRollout 			::rollout_animation 		::CRYOP rolledUp:true
 						-- addRollout 			::rollout_Alert 					::CRYOP rolledUp:false --set runtime instead inside CryMat_XML_.ms
 						addRollout 			::rollout_About 			::CRYOP rolledUp:true					
 
-						CreateDialog 		::cryImporter 	rolledUp:false width:120 height:200		
+						CreateDialog 		::rollout_cryImport 	rolledUp:false width:120 height:200		
 						--//////////////////////////////////////////////////////////////////////////////////////
 					)
 					else

@@ -89,7 +89,7 @@ struct BUILDERS
 	fn delete_iso_vertices &msh: = (
 
 		--////////////////////// Delete isolated vertices for static assets if chosen by the user //////////////////////
-		if ::cryImporter.chk_deleteISOvertices.state then (
+		if ::rollout_cryImport.chk_deleteISOvertices.state then (
 
 			if 	isvalidNode msh AND \
 			(classof msh) == Editable_Mesh then (
@@ -1685,7 +1685,7 @@ struct BUILDERS
 		--maybe one is legacy for the dirt, which is now inferior to blend material
 		--I am not sure, need to research this further		
 		
-		local game = (::cryImporter.ddl_CryGame.items[::cryImporter.ddl_CryGame.selection])
+		local game = (::rollout_cryImport.ddl_CryGame.items[::rollout_cryImport.ddl_CryGame.selection])
 		
 		---------------------------------------------- Set Vert Colors ----------------------------------------------
 		if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[4] > 0 then --we check that there are indeed CGF_STREAM_COLORS
@@ -1822,7 +1822,7 @@ struct BUILDERS
 						)						
 
 -- 						--////////////////////// Delete isolated vertices for static assets if chosen by the user //////////////////////
--- 						if ::cryImporter.chk_deleteISOvertices.state then
+-- 						if ::rollout_cryImport.chk_deleteISOvertices.state then
 -- 						(
 -- 							meshop.deleteIsoVerts msh
 -- 						)
@@ -3849,7 +3849,7 @@ struct BUILDERS
 						if nFlags == 0x0002 OR \ 
 						   nFlags == (0x0002 + 0x0004) then ( -- see MESH_CHUNK_DESC_0801.EFlags				
 
-							if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then (
+							if NOT ::rollout_cryImport.chk_Dont_Load_Skeleton.state then (
 
 								GET_CryBoneDescData_Comp \
 																		_LOADED: 					&_LOADED \
@@ -4112,7 +4112,7 @@ struct BUILDERS
 						)
 						
 						---------------------------------- Build Skeleton ---------------------------------
-						if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then
+						if NOT ::rollout_cryImport.chk_Dont_Load_Skeleton.state then
 						(
 							local nFlags = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags					
 
@@ -4361,7 +4361,7 @@ struct BUILDERS
 						)
 						
 						---------------------------------- Build Skeleton ---------------------------------
-						if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then
+						if NOT ::rollout_cryImport.chk_Dont_Load_Skeleton.state then
 						(
 							local nFlags = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags					
 
@@ -4542,7 +4542,7 @@ struct BUILDERS
 						)
 						
 						---------------------------------- Build Skeleton ---------------------------------
-						if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then
+						if NOT ::rollout_cryImport.chk_Dont_Load_Skeleton.state then
 						(
 							local nFlags = ::g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags
 
@@ -4723,7 +4723,7 @@ struct BUILDERS
 						)
 						
 						---------------------------------- Build Skeleton ---------------------------------
-						if NOT ::cryImporter.chk_Dont_Load_Skeleton.state then
+						if NOT ::rollout_cryImport.chk_Dont_Load_Skeleton.state then
 						(
 							local nFlags = ::g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags
 

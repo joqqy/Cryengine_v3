@@ -787,7 +787,7 @@ struct create_bones
 								local boneDuplicate				= false
 
 
-								if ::cryImporter.chk_Force_2_Base_Skeleton.state then
+								if ::rollout_cryImport.chk_Force_2_Base_Skeleton.state then
 								(
 									--Search by name to see if the node does already exist --returns the bone if the node is already present
 									local existsBone = getNodeByName m_arrBoneName exact:true ignoreCase:true
