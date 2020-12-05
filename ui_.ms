@@ -1981,8 +1981,8 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 								local db_filename = (db_type as string) +"_db.txt"
 								
 								local confirm = #no	
-								if doesfileexist (pathConfig.resolvePathSymbols (pathConfig.AppendPath (pathConfig.AppendPath ::g_scriptRoot "\\db") db_filename)) then
-								(
+								if doesfileexist (pathConfig.resolvePathSymbols (pathConfig.AppendPath (pathConfig.AppendPath ::g_scriptRoot "\\db") db_filename)) then (
+
 									confirm = yesNoCancelBox (db_filename + " already exists - continue?") \
 																			title:"WARNING" \
 																			beep:true
@@ -2139,10 +2139,11 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 								(
 									try
 									(
-										examine_XML \
-														g_cryFile: &g_cryFile
+										examine_XML g_cryFile: &g_cryFile
 									)
-									catch()
+									catch(
+									format "%" (getCurrentException())
+									)
 								)								
 							)
 							on btn_CAF_reader pressed do
@@ -2152,20 +2153,17 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							on btn_build_mtl_db pressed do
 							(
 								::g_db_type = "mtl"
-								db_creation_ask \
-														db_type: &::g_db_type
+								db_creation_ask db_type: &::g_db_type
 							)
 							on btn_build_tif_db pressed do
 							(
 								::g_db_type = "tif"								
-								db_creation_ask \
-														db_type: &::g_db_type
+								db_creation_ask db_type: &::g_db_type
 							)
 							on btn_build_dds_db pressed do
 							(
 								::g_db_type = "dds"
-								db_creation_ask \
-														db_type: &::g_db_type
+								db_creation_ask db_type: &::g_db_type
 							)	
 							on btn_set_ResourceList pressed do
 							(
