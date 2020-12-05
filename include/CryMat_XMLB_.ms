@@ -4579,6 +4579,14 @@ struct xmlB_PROCESSOR
 				inst_tex_tokens.ddn_tkn		= "*_ddn*"
 				inst_tex_tokens.ddna_tkn		= "*_ddna*"
 			)
+
+			(game == "ArcheAge"):
+			(
+				inst_tex_tokens.diff_tkn 		= 	"*_d*"
+				inst_tex_tokens.spec_tkn 		= 	"*_s*"
+				inst_tex_tokens.ddn_tkn		= "*_ddn*"
+				inst_tex_tokens.ddna_tkn		= "*_ddna*"
+			)
 			
 			default:
 			(

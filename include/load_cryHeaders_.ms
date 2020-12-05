@@ -1761,6 +1761,37 @@ fn read_CGF_STREAM_POSITIONS \
 			)
 		)
 	)
+	else if game == "ArcheAge" then
+	(
+		if struct2read.nStreamType == 0x00000000 then
+		(
+			if struct2read.nElementSize == 8 then
+			(
+				for v=1 to struct2read.nCount do
+				(								
+					local x = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (	readHalfFloat bstream:&bstream	) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+															
+					local w = (	readHalfFloat bstream:&bstream	) --Probably the MatID for the mesh with these vertices (but not sure)
+															
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[2] w --this is always 1.0 so far in my tests (but what is it for?)
+				)
+			)
+			else if struct2read.nElementSize == 12 then
+			(
+				for v=1 to struct2read.nCount do
+				(
+					local x = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local y = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR	
+					local z = (readfloat bstream) * ::g_3DS_MAX_UNIT_SCALE_FACTOR						
+					
+					Append StreamStruct2fill.CGF_STREAM_POSITIONS[1] [x, y, z]
+				)
+			)
+		)
+	)
 )
 
 fn read_CGF_STREAM_NORMALS \
@@ -1823,6 +1854,23 @@ fn read_CGF_STREAM_NORMALS \
 		)
 	)
 	else if game == "Armored Warfare" then
+	(
+		if struct2read.nStreamType == 0x00000001 then
+		(
+			if struct2read.nElementSize == 12 then
+			(
+				for v=1 to struct2read.nCount do
+				(								
+					local x = (readfloat bstream)
+					local y = (readfloat bstream)
+					local z = (readfloat bstream)
+					
+					Append StreamStruct2fill.CGF_STREAM_NORMALS [x, y, z]			
+				)
+			)
+		)
+	)
+	else if game == "ArcheAge" then
 	(
 		if struct2read.nStreamType == 0x00000001 then
 		(
@@ -1953,7 +2001,33 @@ fn read_CGF_STREAM_TEXCOORDS \
 			)
 		)
 	)
-	else 	if game == "Armored Warfare" then
+	else if game == "Armored Warfare" then
+	(
+		if struct2read.nStreamType == 0x00000002 then
+		(
+			for v=1 to struct2read.nCount do
+			(		
+				local point_3 = point3
+				
+				local u = (readfloat bstream)
+				local v = (readfloat bstream)
+				local w = 0
+				
+				--UVW fix --for Ryse, we have to mirror the UVs vertically	
+				if ::g_UVW_Flip_V OR (stricmp ::g_CryGame_dropDown_selection "Ryse") == 0 then
+				(
+					point_3 		= [u, (-v+1), w]
+				)
+				else
+				(
+					point_3 		= [u, v, w]
+				)
+
+				Append StreamStruct2fill.CGF_STREAM_TEXCOORDS point_3		
+			)
+		)
+	)
+	else if game == "ArcheAge" then
 	(
 		if struct2read.nStreamType == 0x00000002 then
 		(
@@ -2183,13 +2257,63 @@ fn read_CGF_STREAM_INDICES \
 					local c 		= (readshort bstream #unsigned)+idx_offset	
 					
 					Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
--- 					
--- 					--Remember max index is 1-based (NOT zero based !) thus we need to add +1 to each index
--- 					local a 		= (readshort bstream)+idx_offset
--- 					local b 		= (readshort bstream)+idx_offset
--- 					local c 		= (readshort bstream)+idx_offset	
--- 					
--- 					Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
+					
+					-- --Remember max index is 1-based (NOT zero based !) thus we need to add +1 to each index
+					-- local a 		= (readshort bstream)+idx_offset
+					-- local b 		= (readshort bstream)+idx_offset
+					-- local c 		= (readshort bstream)+idx_offset	
+					
+					-- Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
+				)
+			)
+			else if struct2read.nElementSize == 4 then
+			(
+				for v=1 to struct2read.nCount/3 do --this is the number of elements to read (3 for each face)
+				(
+					--Remember max index is 1-based (NOT zero based !) thus we need to add +1 to each index
+					local a 		= (readfloat bstream #unsigned)+idx_offset
+					local b 		= (readfloat bstream #unsigned)+idx_offset
+					local c 		= (readfloat bstream #unsigned)+idx_offset	
+					
+					Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
+				)
+			)
+		)
+	)
+	else if game == "ArcheAge" then
+	(
+		if struct2read.nStreamType == 0x00000005 then
+		(		
+			if ::rollout_Report.chk_Mesh_Report.state then
+			(
+				format "######### ftell bstream: %\n" (ftell bstream)
+				format "#####################################\n"
+				format "struct2read.nCount: %\n" struct2read.nCount
+				format "#####################################\n"
+			)
+			
+			local idx_offset = 1		
+			if struct2read.nElementSize == 2 then --This is the size of each element to read
+			(
+				for v=1 to struct2read.nCount/3 do --this is the number of elements to read (3 for each face)
+				(					
+					--Remember max index is 1-based (NOT zero based !) thus we need to add +1 to each index
+					--We read them unsigned, because we can get the subset from the meshsubset description, and
+					--thus we do not need to check the indices pos or negative sign to get the subsets
+					--also it is much faster this way, to get the indices unsigned directly
+					--if we need the unsigned indices in the future, we can always uncomment the below code snippet and get them
+					local a 		= (readshort bstream #unsigned)+idx_offset
+					local b 		= (readshort bstream #unsigned)+idx_offset
+					local c 		= (readshort bstream #unsigned)+idx_offset	
+					
+					Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
+					
+					-- --Remember max index is 1-based (NOT zero based !) thus we need to add +1 to each index
+					-- local a 		= (readshort bstream)+idx_offset
+					-- local b 		= (readshort bstream)+idx_offset
+					-- local c 		= (readshort bstream)+idx_offset	
+					
+					-- Append StreamStruct2fill.CGF_STREAM_INDICES [a,b,c]
 				)
 			)
 			else if struct2read.nElementSize == 4 then

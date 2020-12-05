@@ -128,8 +128,8 @@ struct init_Builders
 		
 		
 		--/*		
-		try
-		(
+		-- try
+		-- (
 			local game = ::cryImporter.ddl_CryGame.selected
 			
 			local inst_BUILDERS = BUILDERS() --create instance of class	
@@ -227,14 +227,33 @@ struct init_Builders
 																	inst_CDF_Attachment: 			&inst_CDF_Attachment \
 																	inst_Sub_Meshes: 				&inst_Sub_Meshes
 				--/////////////////////////////////////////////////////////
-			)				
-		)
-		catch
-		(
-			format "\n\n\n\n*** *** *** *** *** *** *** BUILD_MESH ERROR *** *** *** *** *** *** *** ***\n"
-			format "%" (getCurrentException())
-			format "\n*** *** *** *** *** *** END OF BUILD_MESH ERROR *** *** *** *** *** *** *** ***\n\n\n\n"		
-		)	
+			)
+			else if game == "ArcheAge" then
+			(
+				--//////////////////// Build the Meshes ////////////////////
+				inst_BUILDERS.BUILD_ArcheAge \ 
+																	_LOADED:							&::_LOADED \
+																	_LOADEDm:							&::_LOADEDm \
+																	caller:								caller \
+																	nodeCaller:							nodeCaller \
+																	typeCaller:							typeCaller \
+																	currFileType:						currFileType \
+																	Export_EFlags:					Export_EFlags \
+																	info_MeshSubset:				&struct2read \
+																	mtlFile:								&mtlFile \
+																	g_cryFile_m:						&g_cryFile_m \
+																	inst_CDF_Model:					&inst_CDF_Model \
+																	inst_CDF_Attachment: 			&inst_CDF_Attachment \
+																	inst_Sub_Meshes: 				&inst_Sub_Meshes
+				--/////////////////////////////////////////////////////////
+			)
+		-- )
+		-- catch
+		-- (
+		-- 	format "\n\n\n\n*** *** *** *** *** *** *** BUILD_MESH ERROR *** *** *** *** *** *** *** ***\n"
+		-- 	format "%" (getCurrentException())
+		-- 	format "\n*** *** *** *** *** *** END OF BUILD_MESH ERROR *** *** *** *** *** *** *** ***\n\n\n\n"		
+		-- )	
 		--*/		
 	)
 )
