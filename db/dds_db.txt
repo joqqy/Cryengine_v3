@@ -1,4 +1,4 @@
-game;Ryse
+game;ArcheAge
 materials\aa_terrain\field\tr_field_dirt_621a_sp.dds
 materials\decals\quest\alpha.dds
 materials\decals\quest\q_0.dds
