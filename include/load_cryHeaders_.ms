@@ -3190,7 +3190,7 @@ fn read_CryBoneDescData_Comp \
 			local nboneChunks = ChunkSize/584
 			format "============== nboneChunks: %==============\n" nboneChunks
 			
-			for idx = 1 to nboneChunks ( do --we loop the number of subsets
+			for idx = 1 to nboneChunks do ( --we loop the number of subsets
 			
 				struct2fill = CryBoneDescData_Comp()
 										
