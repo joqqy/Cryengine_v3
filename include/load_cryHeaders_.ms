@@ -3179,18 +3179,22 @@ fn read_CryBoneDescData_Comp \
 (	
 	if FileOffset < _filePos then
 	(
-		local boneChunkData_size = ChunkSize - (_filePos - FileOffset)		
+		local boneChunkData_size = ChunkSize - (_filePos - FileOffset)
+
+		format "*** *** *** *** *** *** *** AA: boneChunkData_size: %\n" boneChunkData_size
+		-- boneChunkData_size += 252 -- TODO REMOVE v2
+		-- I think each bone chunk is 324 instead of ordinary 584
+
+		if (mod boneChunkData_size 584) == 0 then (
 		
-		if (mod boneChunkData_size 584) == 0.0 then
-		(
 			local nboneChunks = ChunkSize/584
 			format "============== nboneChunks: %==============\n" nboneChunks
 			
-			for idx=1 to nboneChunks do --we loop the number of subsets
-			(
-				struct2fill 				= CryBoneDescData_Comp()
+			for idx = 1 to nboneChunks ( do --we loop the number of subsets
+			
+				struct2fill = CryBoneDescData_Comp()
 										
-				struct2Fill.chunkID 			= IDxACDC							
+				struct2Fill.chunkID = IDxACDC							
 										
 				--//!< Unique id of bone (generated from bone name).
 				struct2fill.m_nControllerID = readlong bstream #unsigned																	
@@ -3880,16 +3884,16 @@ fn read_CHUNK_0017 \
 															
 					if fileHeader.version == 0x0745 then (						
 
-						IDxACDC = readlong bstream --chunk ID --//new in version 0x0745
+						IDxACDC = readlong bstream --chunk ID --//new in version 0x0745						
 																
 						--confirm we are on the right chunk
-						-- if  (A == 0x0000 OR A == 0x2000) AND \
-						-- 	 B == 0xACDC AND \			
-						-- 	(C == 0x0800 OR C == 0x0801) AND \
-						-- 	IDxACDC == struct2read.ChunkID[1][i] AND \
-						-- 	F == struct2read.FileOffset[1][i] then (								
+						if  (A == 0x0000 OR A == 0x2000) AND \
+							 B == 0xACDC AND \			
+							(C == 0x0800 OR C == 0x0801) AND \ -- TODO v2 AA hack, 0x0801 is for ArcheAge customized compiled bone chunks
+							IDxACDC == struct2read.ChunkID[1][i] AND \
+							F == struct2read.FileOffset[1][i] then (								
 
-							fseek bstream struct2Fill.reserved #seek_cur
+							fseek bstream struct2Fill.reserved #seek_cur							
 																	
 							if ::g_Read_Comp_cryBones_Report then (
 								format "We will now read the Compiled Crybones 0xACDC at fileposition: %\n" (ftell bstream)
@@ -3897,6 +3901,9 @@ fn read_CHUNK_0017 \
 							
 							local ChunkSize = struct2read.ChunkPlusDescr_size[i]
 							local _filePos = (ftell bstream)
+ 
+							format "*** *** *** *** *** *** *** AA: ChunkSize: %\n" ChunkSize
+							format "*** *** *** *** *** *** *** AA: _filePos: %\n" _filePos
 							
 							read_CryBoneDescData_Comp \
 																	bstream:			&bstream \
@@ -3916,7 +3923,7 @@ fn read_CHUNK_0017 \
 							print "read_CHUNK_0017 ************* read_CryBoneDescData_Comp *************"
 							print ::g_stored_CryBoneDescData_Comp
 																	
-						-- )
+						)
 					)					
 				else if fileHeader.version == 0x0744 then
 				(

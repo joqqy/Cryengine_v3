@@ -774,12 +774,14 @@ struct create_bones
 					(
 						if CryBoneDescData_Comp != undefined then
 						(
+							format "*** *** *** *** *** *** *** AA: CryBoneDescData_Comp: %\n" CryBoneDescData_Comp		
+
 							if Create_Bones_Report then
 							(
 								format 	"============ 	g_CryBoneDescData_Comp.count: 	%   ============\n" 		g_CryBoneDescData_Comp.count
 							)
 									
-							for i=1 to CryBoneDescData_Comp.count do
+							for i = 1 to CryBoneDescData_Comp.count do
 							(
 								local m_arrBoneName 			= CryBoneDescData_Comp[i].m_arrBoneName
 								local m_nControllerID			= CryBoneDescData_Comp[i].m_nControllerID
