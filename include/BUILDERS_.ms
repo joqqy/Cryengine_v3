@@ -4923,203 +4923,20 @@ struct BUILDERS
 
 		--/////////////////////////////////// MESH BUILDER ///////////////////////////////////
 	--//! Subset of mesh is a continuous range of vertices and indices that share same material. see IIndexedMesh.h 620
-	-- fn BUILD_ArcheAge \
-	-- 									&_LOADED: \
-	-- 									&_LOADEDm: \
-	-- 									caller: \
-	-- 									nodeCaller: \
-	-- 									typeCaller: \
-	-- 									currFileType: \
-	-- 									Export_EFlags: \
-	-- 									&info_MeshSubset: \						
-	-- 									&mtlFile: \
-	-- 									&g_cryFile_m: \
-	-- 									&inst_CDF_Model: \
-	-- 									&inst_CDF_Attachment: \
-	-- 									&inst_Sub_Meshes: = (	
-
-	-- 	local inst_assetTypes = assetTypes()
-		
-	-- 	inst_assetTypes.g_cryFile = ::g_cryFile
-	-- 	inst_assetTypes.last_Loaded = getINISetting ::g_iniFile "paths" "last_loaded"
-	-- 	inst_assetTypes.first_Loaded = getINISetting ::g_iniFile "paths" "first_loaded"
-	-- 	inst_assetTypes.fileType1 = getINISetting ::g_iniFile "fileType" "fileType1"
-	-- 	inst_assetTypes.fileType2 = getINISetting ::g_iniFile "fileType" "fileType2"
-		
-	-- 	if ::rollout_Report.chk_BUILDER_Report.state then
-	-- 	(
-	-- 		format "-----------------------------> g_cryFile: %\n" 			inst_assetTypes.g_cryFile
-	-- 		format "-----------------------------> first_Loaded: %\n" 	inst_assetTypes.last_Loaded						
-	-- 		format "-----------------------------> last_Loaded: %\n" 		inst_assetTypes.first_Loaded
-	-- 		format "-----------------------------> fileType1: %\n" 		inst_assetTypes.fileType1					
-	-- 		format "-----------------------------> fileType2: %\n" 		inst_assetTypes.fileType2
-	-- 	)		
-
-	-- 	if inst_Sub_Meshes.CA_SKIN_counter > 0 then 
-	-- 	(
-	-- 		if _LOADEDm != unsupplied then
-	-- 		(
-	-- 			if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter] != undefined then
-	-- 			(
-	-- 				for nStream=1 to _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType.count do
-	-- 				(			
-	-- 					-------------------------------------------------------------
-	-- 					inst_Sub_Meshes.nStream 		= nStream
-	-- 					-------------------------------------------------------------
-						
-	-- 					if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[1] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
-	-- 						_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
-	-- 					(
-	-- 						local tm = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
-	-- 						local ObjectID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
-	-- 						local ParentID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
-							
-	-- 						local pos_stream_id	= 1
-							
-	-- 						local nCount = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nCount
-							
-	-- 						if ::rollout_Report.chk_BUILDER_Report.state then
-	-- 						(
-	-- 							format "*** ### *** ### *** nCount: % *** ### *** ### ***\n" nCount
-	-- 						)
-	-- 						------------------------------------------------------------------------------				
-
-	-- 						for n=1 to nCount do
-	-- 						(
-	-- 							if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr.count == nCount then
-	-- 							(
-	-- 								local nFirstIndexId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstIndexId
-	-- 								local nNumIndices 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumIndices
-	-- 								local nFirstVertId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstVertId
-	-- 								local nNumVerts 			= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumVerts
-	-- 								local nMatID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nMatID
-	-- 								local vCenter				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].vCenter
-									
-	-- 								msh = unsupplied
-									
-	-- 								BUILDER_ArcheAge	\	
-	-- 																	_LOADED: 							&_LOADED \
-	-- 																	_LOADEDm: 						&_LOADEDm \
-	-- 																	Export_EFlags:					Export_EFlags \
-	-- 																	nstream:							&nstream \
-	-- 																	nCount:								&nCount \
-	-- 																	inst_assetTypes:					&inst_assetTypes \
-	-- 																	nFirstIndexId: 						&nFirstIndexId \
-	-- 																	nNumIndices: 						&nNumIndices \ 
-	-- 																	nFirstVertId: 						&nFirstVertId \
-	-- 																	nNumVerts: 						&nNumVerts \
-	-- 																	nMatID:								&nMatID \
-	-- 																	vCenter:							&vCenter \
-	-- 																	tm:									&tm \
-	-- 																	faces: 								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_INDICES \
-	-- 																	verts:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_POSITIONS[1] \
-	-- 																	normals:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_NORMALS \
-	-- 																	Tangents:							&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TANGENTS \
-	-- 																	QTangents: 						&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_QTANGENTS \
-	-- 																	UV:									&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TEXCOORDS \
-	-- 																	colors:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS \
-	-- 																	colors2:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS2 \
-	-- 																	msh:									&msh \
-	-- 																	inst_Sub_Meshes:				&inst_Sub_Meshes \
-	-- 																	inst_CDF_Attachment: 			&inst_CDF_Attachment	\
-	-- 																	pos_stream_id:					pos_stream_id
-	-- 							)				
-	-- 						)				
-	-- 						------------------------------------------------------------------------------
-	-- 					)
-						
-	-- 					if ::rollout_Options.chk_BuildMaterial.state then
-	-- 					(
-	-- 						---------------------------------- Build Material ---------------------------------
-	-- 						Build_Material 	\
-	-- 											_LOADED: 						&_LOADED \
-	-- 											_LOADEDm: 					&_LOADEDm \
-	-- 											currFileType: 					currFileType \
-	-- 											bstream: 						&bstream \
-	-- 											mtlFile: 							&mtlFile \
-	-- 											g_cryFile_m: 					&g_cryFile_m \
-	-- 											inst_Sub_Meshes: 			&inst_Sub_Meshes \
-	-- 											inst_CDF_Model: 				&inst_CDF_Model \
-	-- 											inst_CDF_Attachment: 		&inst_CDF_Attachment \
-	-- 											inst_CDF_Modifiers:			&inst_CDF_Modifiers
-	-- 					)
-						
-	-- 					---------------------------------- Build Skeleton ---------------------------------
-	-- 					if NOT ::rollout_cryImport.chk_Dont_Load_Skeleton.state then
-	-- 					(
-	-- 						local nFlags = ::g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags
-
-	-- 						format "nFlags: %\n" nFlags
-							
-	-- 						if nFlags == 0x00000002 then --has bones
-	-- 						(
-	-- 							Build_Skeleton \
-	-- 												_LOADED: 					&_LOADED \
-	-- 												_LOADEDm: 				&_LOADEDm \
-	-- 												caller: 						caller	\
-	-- 												nodeCaller: 				nodeCaller \
-	-- 												typeCaller: 					typeCaller \
-	-- 												pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
-	-- 												nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
-	-- 												nCount:						n \ 								
-	-- 												inst_Sub_Meshes: 		&inst_Sub_Meshes \
-	-- 												inst_CDF_Model:			&inst_CDF_Model \
-	-- 												inst_CDF_Attachment: 	&inst_CDF_Attachment
-	-- 						)
-	-- 						else if nFlags == 0x00000004 then --static
-	-- 						(
-	-- 							--////////////////////// Delete isolated vertices for static assets if chosen by the user //////////////////////
-	-- 							delete_iso_vertices \
-	-- 														msh: &msh
-	-- 						)
-							
-	-- 						if (stricmp (typeCaller as string) "CA_BONE") == 0 then
-	-- 						(
-	-- 							link_CA_BONE_toParent \
-	-- 															_LOADED: 					&_LOADED \
-	-- 															_LOADEDm: 				&_LOADEDm \
-	-- 															caller: 						caller	\
-	-- 															nodeCaller: 				nodeCaller \
-	-- 															typeCaller: 					typeCaller \
-	-- 															pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
-	-- 															nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
-	-- 															nCount:						n \ 								
-	-- 															inst_Sub_Meshes: 		&inst_Sub_Meshes \
-	-- 															inst_CDF_Model:			&inst_CDF_Model \
-	-- 															inst_CDF_Attachment: 	&inst_CDF_Attachment
-	-- 						)
-	-- 					)
-	-- 				)
-	-- 			)
-	-- 		)
-	-- 	)	
-	-- 	else
-	-- 	(
-	-- 		format "***Failed to load mesh!*** No meshes to build\n"
-	-- 	)	
-	-- ),
-
 	fn BUILD_ArcheAge \
-								&_LOADED: \
-								&_LOADEDm: \
-								caller: \
-								nodeCaller: \
-								typeCaller: \
-								currFileType: \
-								Export_EFlags: \
-								&info_MeshSubset: \						
-								&mtlFile: \
-								&g_cryFile_m: \
-								&inst_CDF_Model: \
-								&inst_CDF_Attachment: \
-								&inst_Sub_Meshes: = (
-
-		--Note
-		/*
- 		File == inst_Sub_Meshes.CA_SKIN_counter (corresponds to each file, loading from one file directly, this is always 1, but if from a CDF, this can be any positive number)
- 		Sets == nStream (same as the number of 0x00000017)
- 		SubSets	== nCount (number of subsets for each nStream)
-		*/
+										&_LOADED: \
+										&_LOADEDm: \
+										caller: \
+										nodeCaller: \
+										typeCaller: \
+										currFileType: \
+										Export_EFlags: \
+										&info_MeshSubset: \						
+										&mtlFile: \
+										&g_cryFile_m: \
+										&inst_CDF_Model: \
+										&inst_CDF_Attachment: \
+										&inst_Sub_Meshes: = (	
 
 		local inst_assetTypes = assetTypes()
 		
@@ -5129,102 +4946,35 @@ struct BUILDERS
 		inst_assetTypes.fileType1 = getINISetting ::g_iniFile "fileType" "fileType1"
 		inst_assetTypes.fileType2 = getINISetting ::g_iniFile "fileType" "fileType2"
 		
-		if ::rollout_Report.chk_BUILDER_Report.state then (
-
-			format "-----------------------------> g_cryFile: %\n" inst_assetTypes.g_cryFile
-			format "-----------------------------> first_Loaded: %\n" inst_assetTypes.last_Loaded						
-			format "-----------------------------> last_Loaded: %\n" inst_assetTypes.first_Loaded
-			format "-----------------------------> fileType1: %\n" inst_assetTypes.fileType1					
-			format "-----------------------------> fileType2: %\n" inst_assetTypes.fileType2
+		if ::rollout_Report.chk_BUILDER_Report.state then
+		(
+			format "-----------------------------> g_cryFile: %\n" 			inst_assetTypes.g_cryFile
+			format "-----------------------------> first_Loaded: %\n" 	inst_assetTypes.last_Loaded						
+			format "-----------------------------> last_Loaded: %\n" 		inst_assetTypes.first_Loaded
+			format "-----------------------------> fileType1: %\n" 		inst_assetTypes.fileType1					
+			format "-----------------------------> fileType2: %\n" 		inst_assetTypes.fileType2
 		)		
 
-		if inst_Sub_Meshes.CA_SKIN_counter > 0 then  (
-			if _LOADEDm != unsupplied then (
-				if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter] != undefined then (	--Here is the problem, why is this undefined???!!!!-- 
-				
-					for nStream=1 to _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType.count do (
-
+		if inst_Sub_Meshes.CA_SKIN_counter > 0 then 
+		(
+			if _LOADEDm != unsupplied then
+			(
+				if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter] != undefined then
+				(
+					for nStream=1 to _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType.count do
+					(			
 						-------------------------------------------------------------
 						inst_Sub_Meshes.nStream 		= nStream
 						-------------------------------------------------------------
 						
-						if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[16] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
-							_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then ( --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
-						
-							local tm						= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
-							local ObjectID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
-							local ParentID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
-							
-							local pos_stream_id		= 16
-							
-							local nCount = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nCount
-							
-							if ::rollout_Report.chk_BUILDER_Report.state then
-							(
-								format "*** ### *** ### *** nCount: % *** ### *** ### ***\n" nCount
-							)
-							
-							------------------------------------------------------------------------------
-							for n=1 to nCount do
-							(
-								--The MeshSubsetArr which describes the subset chunks must ofcourse be equal to the nCount description in the -- both in the 0x00000017 chunk
-								if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr.count == nCount then --!!!!!!
-								(
-									local nFirstIndexId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstIndexId
-									local nNumIndices 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumIndices
-									local nFirstVertId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstVertId
-									local nNumVerts 			= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumVerts
-									local nMatID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nMatID
-									local vCenter				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].vCenter
-									
-									msh = unsupplied
-									
-									BUILDER_HFR	\	
-														Export_EFlags:					Export_EFlags \
-														nstream:							&nstream \
-														nCount:								&nCount \
-														inst_assetTypes:					&inst_assetTypes \
-														nFirstIndexId: 						&nFirstIndexId \
-														nNumIndices: 						&nNumIndices \ 
-														nFirstVertId: 						&nFirstVertId \
-														nNumVerts: 						&nNumVerts \
-														nMatID:								&nMatID \
-														vCenter:							&vCenter \
-														tm:									&tm \
-														_LOADED:							&_LOADED \
-														_LOADEDm:							&_LOADEDm \
-														faces: 								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_INDICES \
-														verts:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_POSITIONS_HFR[1] \
-														normals:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_NORMALS \
-														Tangents:							&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TANGENTS \
-														QTangents: 						&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_QTANGENTS \
-														UV:									&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TEXCOORDS \
-														colors:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS \
-														colors2:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS2 \
-														msh:									&msh \
-														inst_Sub_Meshes:				&inst_Sub_Meshes \
-														inst_CDF_Attachment: 			&inst_CDF_Attachment \
-														pos_stream_id:					pos_stream_id
-														
-									node_Start_Orientation \
-																	_LOADED:							&_LOADED \
-																	_LOADEDm:							&_LOADEDm \
-																	inst_Sub_Meshes:				&inst_Sub_Meshes \	
-																	nstream:							&nstream \
-																	msh:									&msh
-
-								)				
-							)				
-							------------------------------------------------------------------------------
-						)
-						else 	if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[1] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
-									_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
+						if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[1] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
+							_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
 						(
-							local tm						= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
-							local ObjectID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
-							local ParentID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
-
-							local pos_stream_id		= 1
+							local tm = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
+							local ObjectID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
+							local ParentID = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
+							
+							local pos_stream_id	= 1
 							
 							local nCount = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nCount
 							
@@ -5232,11 +4982,11 @@ struct BUILDERS
 							(
 								format "*** ### *** ### *** nCount: % *** ### *** ### ***\n" nCount
 							)
-							
-							------------------------------------------------------------------------------
+							------------------------------------------------------------------------------				
+
 							for n=1 to nCount do
 							(
-								if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr.count == nCount then --!!!!!!
+								if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr.count == nCount then
 								(
 									local nFirstIndexId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstIndexId
 									local nNumIndices 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumIndices
@@ -5247,41 +4997,32 @@ struct BUILDERS
 									
 									msh = unsupplied
 									
-									BUILDER_HFR	\	
-														Export_EFlags:					Export_EFlags \
-														nstream:							&nstream \
-														nCount:								&nCount \
-														inst_assetTypes:					&inst_assetTypes \
-														nFirstIndexId: 						&nFirstIndexId \
-														nNumIndices: 						&nNumIndices \ 
-														nFirstVertId: 						&nFirstVertId \
-														nNumVerts: 						&nNumVerts \
-														nMatID:								&nMatID \
-														vCenter:							&vCenter \
-														tm:									&tm \
-														_LOADED:							&_LOADED \
-														_LOADEDm:							&_LOADEDm \
-														faces: 								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_INDICES \
-														verts:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_POSITIONS[1] \
-														normals:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_NORMALS \
-														Tangents:							&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TANGENTS \
-														QTangents: 						&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_QTANGENTS \
-														UV:									&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TEXCOORDS \
-														colors:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS \
-														colors2:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS2 \
-														msh:									&msh \
-														inst_Sub_Meshes:				&inst_Sub_Meshes \
-														 inst_CDF_Attachment: 		&inst_CDF_Attachment \
-														pos_stream_id:					pos_stream_id		
-
-									node_Start_Orientation \
-																	_LOADED:							&_LOADED \
-																	_LOADEDm:							&_LOADEDm \
-																	inst_Sub_Meshes:				&inst_Sub_Meshes \	
-																	nstream:							&nstream \
-																	msh:									&msh
-
-
+									BUILDER_ArcheAge	\	
+																		_LOADED: 							&_LOADED \
+																		_LOADEDm: 						&_LOADEDm \
+																		Export_EFlags:					Export_EFlags \
+																		nstream:							&nstream \
+																		nCount:								&nCount \
+																		inst_assetTypes:					&inst_assetTypes \
+																		nFirstIndexId: 						&nFirstIndexId \
+																		nNumIndices: 						&nNumIndices \ 
+																		nFirstVertId: 						&nFirstVertId \
+																		nNumVerts: 						&nNumVerts \
+																		nMatID:								&nMatID \
+																		vCenter:							&vCenter \
+																		tm:									&tm \
+																		faces: 								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_INDICES \
+																		verts:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_POSITIONS[1] \
+																		normals:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_NORMALS \
+																		Tangents:							&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TANGENTS \
+																		QTangents: 						&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_QTANGENTS \
+																		UV:									&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TEXCOORDS \
+																		colors:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS \
+																		colors2:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS2 \
+																		msh:									&msh \
+																		inst_Sub_Meshes:				&inst_Sub_Meshes \
+																		inst_CDF_Attachment: 			&inst_CDF_Attachment	\
+																		pos_stream_id:					pos_stream_id
 								)				
 							)				
 							------------------------------------------------------------------------------
@@ -5306,22 +5047,39 @@ struct BUILDERS
 						---------------------------------- Build Skeleton ---------------------------------
 						if NOT ::rollout_cryImport.chk_Dont_Load_Skeleton.state then
 						(
-							local nFlags = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags					
+							local nFlags = ::g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags
 
-							if nFlags == 0x00000002 then ( -- Cabal2 or ArcheAge (
+							format "nFlags: %\n" nFlags
+							
+							if nFlags == 0x00000002 then --has bones
+							(
+								-- Build_Skeleton \
+								-- 					_LOADED: 					&_LOADED \
+								-- 					_LOADEDm: 				&_LOADEDm \
+								-- 					caller: 						caller	\
+								-- 					nodeCaller: 				nodeCaller \
+								-- 					typeCaller: 					typeCaller \
+								-- 					pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
+								-- 					nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
+								-- 					nCount:						n \ 								
+								-- 					inst_Sub_Meshes: 		&inst_Sub_Meshes \
+								-- 					inst_CDF_Model:			&inst_CDF_Model \
+								-- 					inst_CDF_Attachment: 	&inst_CDF_Attachment
 
+								-- Copied from HFR, however, note that the ArcheAge character uses Biped bones, and thus a different compiled bones chunk, that we have NOT DECODED YET.
+								-- So loading bones will not work for ArcheAge
 								GET_CryBoneDescData_Comp \	
-																		_LOADED: 					&_LOADED \
-																		_LOADEDm: 				&_LOADEDm \
-																		pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
-																		caller: 						caller \
-																		nodeCaller: 				nodeCaller \
-																		typeCaller:					typeCaller \
-																		nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
-																		nCount:						n \ 
-																		inst_Sub_Meshes: 		&inst_Sub_Meshes \
-																		inst_CDF_Model:			&inst_CDF_Model \
-																		inst_CDF_Attachment: 	&inst_CDF_Attachment
+														_LOADED: 					&_LOADED \
+														_LOADEDm: 				&_LOADEDm \
+														pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
+														caller: 						caller \
+														nodeCaller: 				nodeCaller \
+														typeCaller:					typeCaller \
+														nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
+														nCount:						n \ 
+														inst_Sub_Meshes: 		&inst_Sub_Meshes \
+														inst_CDF_Model:			&inst_CDF_Model \
+														inst_CDF_Attachment: 	&inst_CDF_Attachment
 							)
 							else if nFlags == 0x00000004 then --static
 							(
@@ -5346,16 +5104,273 @@ struct BUILDERS
 																inst_CDF_Attachment: 	&inst_CDF_Attachment
 							)
 						)
-						
 					)
-				)	
-			)	
+				)
+			)
 		)	
 		else
 		(
 			format "***Failed to load mesh!*** No meshes to build\n"
-		)		
+		)	
 	),
+
+	-- fn BUILD_ArcheAge \
+	-- 							&_LOADED: \
+	-- 							&_LOADEDm: \
+	-- 							caller: \
+	-- 							nodeCaller: \
+	-- 							typeCaller: \
+	-- 							currFileType: \
+	-- 							Export_EFlags: \
+	-- 							&info_MeshSubset: \						
+	-- 							&mtlFile: \
+	-- 							&g_cryFile_m: \
+	-- 							&inst_CDF_Model: \
+	-- 							&inst_CDF_Attachment: \
+	-- 							&inst_Sub_Meshes: = (
+
+	-- 	--Note
+	-- 	/*
+ 	-- 	File == inst_Sub_Meshes.CA_SKIN_counter (corresponds to each file, loading from one file directly, this is always 1, but if from a CDF, this can be any positive number)
+ 	-- 	Sets == nStream (same as the number of 0x00000017)
+ 	-- 	SubSets	== nCount (number of subsets for each nStream)
+	-- 	*/
+
+	-- 	local inst_assetTypes = assetTypes()
+		
+	-- 	inst_assetTypes.g_cryFile = ::g_cryFile
+	-- 	inst_assetTypes.last_Loaded = getINISetting ::g_iniFile "paths" "last_loaded"
+	-- 	inst_assetTypes.first_Loaded = getINISetting ::g_iniFile "paths" "first_loaded"
+	-- 	inst_assetTypes.fileType1 = getINISetting ::g_iniFile "fileType" "fileType1"
+	-- 	inst_assetTypes.fileType2 = getINISetting ::g_iniFile "fileType" "fileType2"
+		
+	-- 	if ::rollout_Report.chk_BUILDER_Report.state then (
+
+	-- 		format "-----------------------------> g_cryFile: %\n" inst_assetTypes.g_cryFile
+	-- 		format "-----------------------------> first_Loaded: %\n" inst_assetTypes.last_Loaded						
+	-- 		format "-----------------------------> last_Loaded: %\n" inst_assetTypes.first_Loaded
+	-- 		format "-----------------------------> fileType1: %\n" inst_assetTypes.fileType1					
+	-- 		format "-----------------------------> fileType2: %\n" inst_assetTypes.fileType2
+	-- 	)		
+
+	-- 	if inst_Sub_Meshes.CA_SKIN_counter > 0 then  (
+	-- 		if _LOADEDm != unsupplied then (
+	-- 			if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter] != undefined then (	--Here is the problem, why is this undefined???!!!!-- 
+				
+	-- 				for nStream=1 to _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType.count do (
+
+	-- 					-------------------------------------------------------------
+	-- 					inst_Sub_Meshes.nStream 		= nStream
+	-- 					-------------------------------------------------------------
+						
+	-- 					if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[16] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
+	-- 						_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then ( --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
+						
+	-- 						local tm						= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
+	-- 						local ObjectID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
+	-- 						local ParentID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
+							
+	-- 						local pos_stream_id		= 16
+							
+	-- 						local nCount = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nCount
+							
+	-- 						if ::rollout_Report.chk_BUILDER_Report.state then
+	-- 						(
+	-- 							format "*** ### *** ### *** nCount: % *** ### *** ### ***\n" nCount
+	-- 						)
+							
+	-- 						------------------------------------------------------------------------------
+	-- 						for n=1 to nCount do
+	-- 						(
+	-- 							--The MeshSubsetArr which describes the subset chunks must ofcourse be equal to the nCount description in the -- both in the 0x00000017 chunk
+	-- 							if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr.count == nCount then --!!!!!!
+	-- 							(
+	-- 								local nFirstIndexId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstIndexId
+	-- 								local nNumIndices 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumIndices
+	-- 								local nFirstVertId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstVertId
+	-- 								local nNumVerts 			= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumVerts
+	-- 								local nMatID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nMatID
+	-- 								local vCenter				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].vCenter
+									
+	-- 								msh = unsupplied
+									
+	-- 								BUILDER_HFR	\	
+	-- 													Export_EFlags:					Export_EFlags \
+	-- 													nstream:							&nstream \
+	-- 													nCount:								&nCount \
+	-- 													inst_assetTypes:					&inst_assetTypes \
+	-- 													nFirstIndexId: 						&nFirstIndexId \
+	-- 													nNumIndices: 						&nNumIndices \ 
+	-- 													nFirstVertId: 						&nFirstVertId \
+	-- 													nNumVerts: 						&nNumVerts \
+	-- 													nMatID:								&nMatID \
+	-- 													vCenter:							&vCenter \
+	-- 													tm:									&tm \
+	-- 													_LOADED:							&_LOADED \
+	-- 													_LOADEDm:							&_LOADEDm \
+	-- 													faces: 								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_INDICES \
+	-- 													verts:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_POSITIONS_HFR[1] \
+	-- 													normals:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_NORMALS \
+	-- 													Tangents:							&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TANGENTS \
+	-- 													QTangents: 						&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_QTANGENTS \
+	-- 													UV:									&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TEXCOORDS \
+	-- 													colors:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS \
+	-- 													colors2:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS2 \
+	-- 													msh:									&msh \
+	-- 													inst_Sub_Meshes:				&inst_Sub_Meshes \
+	-- 													inst_CDF_Attachment: 			&inst_CDF_Attachment \
+	-- 													pos_stream_id:					pos_stream_id
+														
+	-- 								node_Start_Orientation \
+	-- 																_LOADED:							&_LOADED \
+	-- 																_LOADEDm:							&_LOADEDm \
+	-- 																inst_Sub_Meshes:				&inst_Sub_Meshes \	
+	-- 																nstream:							&nstream \
+	-- 																msh:									&msh
+
+	-- 							)				
+	-- 						)				
+	-- 						------------------------------------------------------------------------------
+	-- 					)
+	-- 					else 	if 	_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[1] > 0 AND \ --we check that there are indeed CGF_STREAM_POSITIONS --the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
+	-- 								_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_CHUNK_DESC_0801[nStream].nStreamChunkID[6] > 0 then --we check that there are indeed CGF_STREAM_INDICES		--the index reflects ECgfStreamType, the pos is located at 1, and the value tells us which chunID it is
+	-- 					(
+	-- 						local tm						= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].tm
+	-- 						local ObjectID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ObjectID
+	-- 						local ParentID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_NODE_CHUNK_DESC_0824[nStream].ParentID
+
+	-- 						local pos_stream_id		= 1
+							
+	-- 						local nCount = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nCount
+							
+	-- 						if ::rollout_Report.chk_BUILDER_Report.state then
+	-- 						(
+	-- 							format "*** ### *** ### *** nCount: % *** ### *** ### ***\n" nCount
+	-- 						)
+							
+	-- 						------------------------------------------------------------------------------
+	-- 						for n=1 to nCount do
+	-- 						(
+	-- 							if _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr.count == nCount then --!!!!!!
+	-- 							(
+	-- 								local nFirstIndexId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstIndexId
+	-- 								local nNumIndices 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumIndices
+	-- 								local nFirstVertId 		= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nFirstVertId
+	-- 								local nNumVerts 			= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nNumVerts
+	-- 								local nMatID				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].nMatID
+	-- 								local vCenter				= _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].MeshSubsetsArr[n].vCenter
+									
+	-- 								msh = unsupplied
+									
+	-- 								BUILDER_HFR	\	
+	-- 													Export_EFlags:					Export_EFlags \
+	-- 													nstream:							&nstream \
+	-- 													nCount:								&nCount \
+	-- 													inst_assetTypes:					&inst_assetTypes \
+	-- 													nFirstIndexId: 						&nFirstIndexId \
+	-- 													nNumIndices: 						&nNumIndices \ 
+	-- 													nFirstVertId: 						&nFirstVertId \
+	-- 													nNumVerts: 						&nNumVerts \
+	-- 													nMatID:								&nMatID \
+	-- 													vCenter:							&vCenter \
+	-- 													tm:									&tm \
+	-- 													_LOADED:							&_LOADED \
+	-- 													_LOADEDm:							&_LOADEDm \
+	-- 													faces: 								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_INDICES \
+	-- 													verts:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_POSITIONS[1] \
+	-- 													normals:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_NORMALS \
+	-- 													Tangents:							&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TANGENTS \
+	-- 													QTangents: 						&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_QTANGENTS \
+	-- 													UV:									&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_TEXCOORDS \
+	-- 													colors:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS \
+	-- 													colors2:								&_LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_ECgfStreamType[nStream].CGF_STREAM_COLORS2 \
+	-- 													msh:									&msh \
+	-- 													inst_Sub_Meshes:				&inst_Sub_Meshes \
+	-- 													 inst_CDF_Attachment: 		&inst_CDF_Attachment \
+	-- 													pos_stream_id:					pos_stream_id		
+
+	-- 								node_Start_Orientation \
+	-- 																_LOADED:							&_LOADED \
+	-- 																_LOADEDm:							&_LOADEDm \
+	-- 																inst_Sub_Meshes:				&inst_Sub_Meshes \	
+	-- 																nstream:							&nstream \
+	-- 																msh:									&msh
+
+
+	-- 							)				
+	-- 						)				
+	-- 						------------------------------------------------------------------------------
+	-- 					)
+						
+	-- 					if ::rollout_Options.chk_BuildMaterial.state then
+	-- 					(
+	-- 						---------------------------------- Build Material ---------------------------------
+	-- 						Build_Material 	\
+	-- 											_LOADED: 						&_LOADED \
+	-- 											_LOADEDm: 					&_LOADEDm \
+	-- 											currFileType: 					currFileType \
+	-- 											bstream: 						&bstream \
+	-- 											mtlFile: 							&mtlFile \
+	-- 											g_cryFile_m: 					&g_cryFile_m \
+	-- 											inst_Sub_Meshes: 			&inst_Sub_Meshes \
+	-- 											inst_CDF_Model: 				&inst_CDF_Model \
+	-- 											inst_CDF_Attachment: 		&inst_CDF_Attachment \
+	-- 											inst_CDF_Modifiers:			&inst_CDF_Modifiers
+	-- 					)
+						
+	-- 					---------------------------------- Build Skeleton ---------------------------------
+	-- 					if NOT ::rollout_cryImport.chk_Dont_Load_Skeleton.state then
+	-- 					(
+	-- 						local nFlags = _LOADEDm[inst_Sub_Meshes.CA_SKIN_counter].g_MESH_SUBSETS_CHUNK_DESC_0800[nStream].nFlags					
+
+	-- 						if nFlags == 0x00000002 then ( -- Cabal2 or ArcheAge (
+
+	-- 							GET_CryBoneDescData_Comp \	
+	-- 																	_LOADED: 					&_LOADED \
+	-- 																	_LOADEDm: 				&_LOADEDm \
+	-- 																	pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
+	-- 																	caller: 						caller \
+	-- 																	nodeCaller: 				nodeCaller \
+	-- 																	typeCaller:					typeCaller \
+	-- 																	nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
+	-- 																	nCount:						n \ 
+	-- 																	inst_Sub_Meshes: 		&inst_Sub_Meshes \
+	-- 																	inst_CDF_Model:			&inst_CDF_Model \
+	-- 																	inst_CDF_Attachment: 	&inst_CDF_Attachment
+	-- 						)
+	-- 						else if nFlags == 0x00000004 then --static
+	-- 						(
+	-- 							--////////////////////// Delete isolated vertices for static assets if chosen by the user //////////////////////
+	-- 							delete_iso_vertices \
+	-- 														msh: &msh
+	-- 						)
+							
+	-- 						if (stricmp (typeCaller as string) "CA_BONE") == 0 then
+	-- 						(
+	-- 							link_CA_BONE_toParent \
+	-- 															_LOADED: 					&_LOADED \
+	-- 															_LOADEDm: 				&_LOADEDm \
+	-- 															caller: 						caller	\
+	-- 															nodeCaller: 				nodeCaller \
+	-- 															typeCaller: 					typeCaller \
+	-- 															pos_stream_id:			&pos_stream_id \ 	--pass as pointer (remember to dereference at the destination)										
+	-- 															nStream:					&nStream \ 			--pass as pointer (remember to dereference at the destination)
+	-- 															nCount:						n \ 								
+	-- 															inst_Sub_Meshes: 		&inst_Sub_Meshes \
+	-- 															inst_CDF_Model:			&inst_CDF_Model \
+	-- 															inst_CDF_Attachment: 	&inst_CDF_Attachment
+	-- 						)
+	-- 					)
+						
+	-- 				)
+	-- 			)	
+	-- 		)	
+	-- 	)	
+	-- 	else
+	-- 	(
+	-- 		format "***Failed to load mesh!*** No meshes to build\n"
+	-- 	)		
+	-- ),
 	--///////////////////////////////// END OF MESH BUILDER /////////////////////////////////
 
 	--/////////////////////////////////// MESH BUILDER /////////////////////////////////// --WIP
