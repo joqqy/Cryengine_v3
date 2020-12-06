@@ -22,8 +22,6 @@
 
 --////////////////////////////////////////////////////////////////////////////////////////
 
--- v2 it seems that creating the database did not work in max > 2017, but in max 2017 it worked. Not sure what is going on.
-
 global g_scriptsDefault 		= getdir #scripts
 global g_max_version 			= ((MaxVersion())[1])/1000
 
@@ -1968,27 +1966,25 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 							checkButton 'ckb_use_custom_ResourceList' "" pos:[237,160] width:25 height:25 align:#left tooltip:"Check to use the custom Resource List" \
 							images:#((	(getdir #maxSysIcons) + "Dark\\Grips\\Check_off_18.png"	), undefined, 1, 1, 1, 1, 1, false) highlightColor:[100, 100, 100]
 							
-							GroupBox 'grp_db_builder_scan' "Create Database Scanning Game Root" pos:[9,210] width:265 height:55 align:#left
+							GroupBox 'grp_db_builder_scan' "Create Database db files above, by scanning game root" pos:[9,210] width:265 height:55 align:#left
 							button 'btn_set_scanBuild' "Build SCAN DB" pos:[20,232] width:245 height:25 align:#left
 							
-							-- TODO:
-							-- v2 it seems that creating the database did not work in max > 2017, but in max 2017 it worked. Not sure what is going on.
+							-- TODO: works in max2017 and 2021
+							-- TODO: Does not work in max 2018
+							-- v2 it seems that creating the database did not work in max 2018, but in max 2017 and 2021 it worked. Not sure what is going on.
 							-- As for the KCD version of the script (it has a different code than the below - we tested it here but it didn't work - but did it work in max 2021?)
-							fn db_creation_ask \
-														caller: \
-														&db_type: =
-							(	
+							fn db_creation_ask caller: \
+											   &db_type: = (
+
 								local db_filename = (db_type as string) +"_db.txt"
 								
 								local confirm = #no	
 								if doesfileexist (pathConfig.resolvePathSymbols (pathConfig.AppendPath (pathConfig.AppendPath ::g_scriptRoot "\\db") db_filename)) then (
 
 									confirm = yesNoCancelBox (db_filename + " already exists - continue?") \
-																			title:"WARNING" \
-																			beep:true
-								)
-								else
-								(
+															 title: "WARNING" \
+															 beep: true
+								) else (
 									confirm = #yes
 								)
 								
@@ -1997,59 +1993,56 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 									if caller == unsupplied then
 									(
 										::g_db_type = db_type
-										inst_build_resource_db 			= build_resource_db() --create instance
-										inst_build_resource_db.builder \
-																					g_db_type: &::g_db_type
+										inst_build_resource_db = build_resource_db() --create instance
+										inst_build_resource_db.builder g_db_type: &::g_db_type
 									)
 									else if (stricmp caller "scan") == 0 then
 									(										
 										local confirm = #no	
 										if  doesfileexist (pathConfig.resolvePathSymbols (pathConfig.AppendPath (pathConfig.AppendPath ::g_scriptRoot "\\db") "mtl_db.txt")) OR \
-											doesfileexist (pathConfig.resolvePathSymbols (pathConfig.AppendPath (pathConfig.AppendPath ::g_scriptRoot "\\db") "dds_db.txt")) then
-										(
+											doesfileexist (pathConfig.resolvePathSymbols (pathConfig.AppendPath (pathConfig.AppendPath ::g_scriptRoot "\\db") "dds_db.txt")) then (
+
 											confirm = yesNoCancelBox (db_filename + " already exists - continue?") \
 																					title:"WARNING" \
 																					beep:true
 										)
 										
-										if confirm == #yes then
-										(
-											inst_build_resource_db 			= build_resource_db() --create instance
+										if confirm == #yes then (
+
+											inst_build_resource_db = build_resource_db() --create instance
 											inst_build_resource_db.SCAN_builder()
 										)
 									)
 								)
 							)
 							
-							fn ckb_resourceList_control \
-																	state: =
-							(
-								local image_off_arr = #((	(getdir #maxSysIcons) + "Dark\\Grips\\Check_off_18.png" ), undefined, 1, 1, 1, 1, 1, false)
-								local image_on_arr = #((	(getdir #maxSysIcons) + "Dark\\Grips\\Check_18.png" ), undefined, 1, 1, 1, 1, 1, false)
+							fn ckb_resourceList_control state: = (
+
+								local image_off_arr = #( ((getdir #maxSysIcons) + "Dark\\Grips\\Check_off_18.png" ), undefined, 1, 1, 1, 1, 1, false )
+								local image_on_arr = #( ((getdir #maxSysIcons) + "Dark\\Grips\\Check_18.png" ), undefined, 1, 1, 1, 1, 1, false )
 										
-								if state == off then
-								(
+								if state == off then(
+
 									ckb_use_custom_ResourceList.images = image_off_arr
 									ckb_use_custom_ResourceList.images = image_off_arr
-								)
-								else
-								(
+
+								) else (
+
 									ckb_use_custom_ResourceList.images = image_on_arr
 									ckb_use_custom_ResourceList.images = image_on_arr
 								)
 							)
 							
-							on rollout_Tools open do
-							(								
-								if (setdir #scripts ::g_scriptsDefault) then
-								(
+							on rollout_Tools open do (
+
+								if (setdir #scripts ::g_scriptsDefault) then (
 									format "Current Scripts Dir set to #scripts: %\n" (getdir #scripts)
-								)
-								else
-								(
+
+								) else (
 									format "Current #scripts dir: %\n" (getdir #scripts)
 								)
 							)
+
 							on rollout_Tools close do
 							(
 								if (setdir #scripts ::g_scriptsDefault) then
@@ -2061,6 +2054,7 @@ if  g_max_version >= 19 then --MAX 2017 or higher required
 									format "Current #scripts dir: %\n" (getdir #scripts)
 								)
 							)
+
 							on rollout_Tools rolledUp state do
 							(
 								if NOT state then

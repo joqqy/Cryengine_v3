@@ -87,30 +87,25 @@ struct build_resource_db
 		StreamReader.Close() --Close dotNet stream
 	),
 	
-	fn builder \
-					&g_db_type: =
-	(
+	fn builder &g_db_type: = (
+
 		format "Attempting to create .% database, please wait...\n" g_db_type
 		print ::g_auto_resourcelist_array
 		
-		if 	::g_db_type != "" then
-		(
-			if ::g_auto_resourcelist_array.count == 0 then
-			(
-				::g_auto_resourcelist_array = getFilesRecursive \
-																					root:			(::g_dirPath) \
-																					specDir:		"Levels" \
-																					targetFile:	"auto_resourcelist.txt"
+		if ::g_db_type != "" then (
+			if ::g_auto_resourcelist_array.count == 0 then (
+
+				::g_auto_resourcelist_array = getFilesRecursive root: (::g_dirPath) \
+																specDir: "Levels" \
+																targetFile:	"auto_resourcelist.txt"
 			)
 			
-			if (stricmp ::g_db_type "tif") == 0 then
-			(
-				if ::g_perlayerresourcelist_array.count == 0 then
-				(
-					::g_perlayerresourcelist_array = getFilesRecursive \
-																					root:			(::g_dirPath) \
-																					specDir:		"Levels" \
-																					targetFile:	"perlayerresourcelist.txt"
+			if (stricmp ::g_db_type "tif") == 0 then (
+				if ::g_perlayerresourcelist_array.count == 0 then (
+
+					::g_perlayerresourcelist_array = getFilesRecursive root: (::g_dirPath) \
+																	   specDir: "Levels" \
+																	   targetFile:	"perlayerresourcelist.txt"
 				)
 			)
 		)
@@ -122,12 +117,10 @@ struct build_resource_db
 		local resourceLists = #()	
 		
 		if 	(stricmp ::g_db_type "mtl") == 0 OR \
-			(stricmp ::g_db_type "dds") == 0 then
-		(
-			resourceLists = ::g_auto_resourcelist_array	
-		)
-		else if (stricmp ::g_db_type "tif") == 0 then
-		(
+			(stricmp ::g_db_type "dds") == 0 then (
+			resourceLists = ::g_auto_resourcelist_array
+
+		) else if (stricmp ::g_db_type "tif") == 0 then (
 			resourceLists = ::g_perlayerresourcelist_array	
 		)
 		
