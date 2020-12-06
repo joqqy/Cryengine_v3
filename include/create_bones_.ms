@@ -135,14 +135,14 @@ struct create_bones
 								if Create_Bones_Report then ( format "CURRENT: %\n" checkmod )	
 								-------------------------------
 											
-								if iskindof checkmod Skin then
-								(
+								if iskindof checkmod Skin then (
+
 									local nBones = skinOps.GetNumberBones theSkin
 												
-									if nBones > 0 then
-									(
-										if Create_Bones_Report then
-										(
+									if nBones > 0 then (
+
+										if Create_Bones_Report then (
+
 											---------------	---------------	---------------	---------------	
 											format 	"nFirstVertId = %\n" 	nFirstVertId
 											format 	"nNumVerts = %\n" 		nNumVerts					
@@ -152,26 +152,28 @@ struct create_bones
 										--// REPORT
 										format "CURRENTLY APPLYING WEIGHTS TO: % Please Wait...\n" inst_Sub_Meshes.subMeshes[n].name
 													
-										for v=nFirstVertId+1 to ((nFirstVertId)+nNumVerts) do --loop the size of nNumVerts as described in the MeshSubset info (also not, max is not zero based, so we have to add +1 to "v")	
-										(
-											local BonesIDs_x_4 		= #()
-											local Weights_x_4 		= #()
+										for v=nFirstVertId+1 to ((nFirstVertId)+nNumVerts) do ( --loop the size of nNumVerts as described in the MeshSubset info (also not, max is not zero based, so we have to add +1 to "v")	
+										
+											local BonesIDs_x_4 = #()
+											local Weights_x_4 = #()
 													
-											if CrySkinVtx[v] != undefined then
-											(
-												i=4						
-												while i > 0 do --apply weights backwards, because the zero weights (Representing IDs of 1 in our script) come last in the cgf/chr and they are applied, the last bones are reapplied the wrong value of zero.
-												(	
-													if CrySkinVtx[v].idx[i] != undefined then
-													(
-														local bonesIDs = CrySkinVtx[v].idx[i]+1 --our max bones start at 1 and not zero, therefor we must add +1 --the CrySkinVtx structs
+											if CrySkinVtx[v] != undefined then (
+
+												i = 4						
+												while i > 0 do ( --apply weights backwards, because the zero weights (Representing IDs of 1 in our script) come last in the cgf/chr and they are applied, the last bones are reapplied the wrong value of zero.
+													
+													if CrySkinVtx[v].idx[i] != undefined then (
+													
+														local bonesIDs = CrySkinVtx[v].idx[i] + 1 --our max bones start at 1 and not zero, therefor we must add +1 --the CrySkinVtx structs
 																	
-														if bonesIDs <= nBones then --Note, that if we do not constrain it like this, we could get a boneID out of range (not sure if these are blending modes, perhaps to previous submesh, so we leave them out for now,)
-														(									   --This constraint does not seem to affect the weight mapping (these might be blending bones of some sort)
-															Append   (BonesIDs_x_4)   (bonesIDs)
+														--Note, that if we do not constrain it like this, we could get a boneID out of range (not sure if these are blending modes, perhaps to previous submesh, so we leave them out for now,)
+														--This constraint does not seem to affect the weight mapping (these might be blending bones of some sort)
+														if bonesIDs <= nBones then (
+															
+															Append (BonesIDs_x_4) (bonesIDs)
 																					
 															--add 4 weights to array
-															Append   (Weights_x_4)   (CrySkinVtx[v].w[i]) --the CrySkinVtx structs							
+															Append (Weights_x_4) (CrySkinVtx[v].w[i]) --the CrySkinVtx structs							
 														)
 																		
 														i -= 1
